@@ -18,5 +18,3 @@ print dictionary_test
 
 with open('dictionary_test', 'w') as f:
     json.dump(dictionary_test, f)
-
-print "This is a new line"
