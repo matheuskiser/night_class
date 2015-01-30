@@ -5,13 +5,9 @@ phone_book_dictionary = {'Matheus': {'fname': 'Matheus', 'lname': 'Iser', 'phone
 
 def change_entry():
     change_value = raw_input("Enter first name to change something in the entry: ")
-
     search(change_value)
-
     remove_entry(change_value)
-
     print "\nEdit this entry"
-
     add_value()
 
 
@@ -64,26 +60,23 @@ def pick_option(option):
         print_phone_book()
     elif option == "2":
         #add entry
-        print "\n"
         print "Add an entry: "
         add_value()
     elif option == "3":
         #remove entry
-        print "\n"
         removed_entry = raw_input("Enter entry you want to remove: ")
         remove_entry(removed_entry)
         print "Entry '" + removed_entry + "' has been removed.\n"
     elif option == "4":
         #search
-        print "\n"
         search_term = raw_input("Enter a search term: ")
         search(search_term)
-    elif option == "6":
-        #quit
-        print "Thanks for using our Phone Book."
     elif option == "5":
         #change entry
         change_entry()
+    elif option == "6":
+        #quit
+        print "Thanks for using our Phone Book."
 
 
 #Start program

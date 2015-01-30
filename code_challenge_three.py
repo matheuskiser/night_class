@@ -8,12 +8,18 @@ str = "Yms bgb gr! Cmlepyrsjyrgmlq! Dgb wms sqc qrpgle.kyicrpylq? Id wms bgbl'r 
 # z = b
 # m = o
 
-test = list(str)
-alphabet = list('abcdefghijklmnopqrstuvwxyz')
-correct_string = ''
+shift   = 2
+letters = list(str)
+cipher  = ''
 
-for key in test:
-    for key in alphabet:
-        correct_string += alphabet[(alphabet.index(key)+2)]
+ceasar = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
 
-print correct_string
+for letter in letters:
+    if letter in ceasar:
+        oldindex = ceasar.index(letter)
+        newindex = (oldindex + shift) % len(ceasar)
+        newletter = ceasar[newindex]
+    else:
+        newletter = letter
+
+    print(letter)
