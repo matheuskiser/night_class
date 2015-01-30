@@ -1,20 +1,24 @@
 import json
+import os
 
 dictionary_test = {}
 
-with open('dictionary_test') as f:
-	dictionary_test = json.load(f)
+open_file = open('my_dict.json', 'w+')
+read_file = open('my_dict.json', 'r')
 
-print dictionary_test['name']
-
-dictionary_test['name'] = "Matheus"
+try:
+    dictionary_test = json.load(read_file)
+except ValueError, e:
+    json.dump({}, open_file)
 
 age_label = raw_input("Enter label: ")
 age_value = raw_input("Enter age value: ")
 
 dictionary_test[age_label] = age_value
 
-print dictionary_test
+json.dump(dictionary_test, open_file)
 
-with open('dictionary_test', 'w') as f:
-    json.dump(dictionary_test, f)
+read_file.close()
+open_file.close()
+
+print dictionary_test

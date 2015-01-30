@@ -1,9 +1,9 @@
-# Declare dictionary variable
-phone_book_dictionary = {'Matheus': {'fname': 'Matheus', 'lname': 'Iser', 'phone_number': '503-333-4657'}}
 
-# Functions
+# Declare dictionary variable
+phone_book_dictionary = {'Matheus': {'fname': 'Matheus', 'lname': 'Iser', 'phone_number': '5033334657'}}
+
+
 def change_entry():
-    print "\n"
     change_value = raw_input("Enter first name to change something in the entry: ")
 
     search(change_value)
@@ -11,6 +11,7 @@ def change_entry():
     remove_entry(change_value)
 
     print "\nEdit this entry"
+
     add_value()
 
 
@@ -20,7 +21,6 @@ def search(search_term):
             print "First Name: " + value['fname']
             print "Last Name: " + value['lname']
             print "Phone Number: " + value['phone_number']
-            print "\n"
 
 
 def remove_entry(removed_entry):
@@ -30,12 +30,10 @@ def remove_entry(removed_entry):
 
 
 def print_phone_book():
-    print "\n"
     for key in phone_book_dictionary.values():
         print "First Name: " + key['fname']
         print "Last Name: " + key['lname']
         print "Phone Number: " + key['phone_number']
-        print "\n"
 
 
 def add_value():
@@ -44,8 +42,6 @@ def add_value():
     add_entry_phone_number = raw_input("Phone number: ")
 
     phone_book_dictionary[add_entry_fname] = {'fname': add_entry_fname, 'lname': add_entry_lname, 'phone_number': add_entry_phone_number}
-
-    print "\n"
 
 
 def display_menu():
@@ -90,6 +86,7 @@ def pick_option(option):
         change_entry()
 
 
+#Start program
 display_menu()
 
 
