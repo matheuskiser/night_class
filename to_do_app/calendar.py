@@ -5,7 +5,6 @@ import datetime
 class Calendar(object):
 
     calendar_list = []
-    previous_date = ""
 
     def __init__(self):
         date = datetime.datetime.now()
