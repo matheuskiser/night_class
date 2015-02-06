@@ -40,9 +40,10 @@ def enter_entry():
     date = raw_input("Enter date (yyyy-mm-dd): ")
     time_of_day = raw_input("Time of day of task: ")
 
+    # Adds a calendar entry
     entry = CalendarEntry(title, description, date, time_of_day)
 
-    # Adds user entry to calendar
+    # Adds calendar entry to calendar
     calendar.add_to_calendar(entry)
 
     # Wipes screen from previous level

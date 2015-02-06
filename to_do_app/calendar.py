@@ -18,6 +18,7 @@ class Calendar(object):
 
     def display_calendar(self):
 
+        # Sort calendar list of objects by date
         sorted_list = self.sort_list()
 
         # display list
