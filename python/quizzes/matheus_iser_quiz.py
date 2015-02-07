@@ -1,3 +1,5 @@
+__author__ = 'Matheus Konzen Iser'
+
 # Print 'Hello World'
 print "Hello World"
 
