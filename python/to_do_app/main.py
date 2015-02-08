@@ -1,6 +1,4 @@
 import os
-from calendar_entry import CalendarEntry
-from calendar import Calendar
 
 
 # Displays to user what they want to do
@@ -19,13 +17,12 @@ def display_menu():
 # Picks option from what user picked
 def pick_option(option):
     if option == 1:
-        # Start game
+        """Start game"""
         enter_entry()
     elif option == 2:
-        # Show calendar
-        show_calendar(calendar)
+        """Show calendar"""
     elif option == 3:
-        # Quit app
+        """Quit app"""
         print "Thanks for using our to-do app!\n"
 
 
@@ -40,22 +37,6 @@ def enter_entry():
     date = raw_input("Enter date (yyyy-mm-dd): ")
     time_of_day = raw_input("Time of day of task: ")
 
-    # Adds a calendar entry
-    entry = CalendarEntry(title, description, date, time_of_day)
-
-    # Adds calendar entry to calendar
-    calendar.add_to_calendar(entry)
-
-    # Wipes screen from previous level
-    os.system('clear')
-
-
-def show_calendar(calendar):
-    calendar.display_calendar()
-
-
-# Create instance of Calendar
-calendar = Calendar()
 
 # Runs program
 display_menu()
