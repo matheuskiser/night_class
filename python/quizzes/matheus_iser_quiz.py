@@ -20,6 +20,9 @@ for i in fruits:
 # 6. Create a dictionary called people that has another dictionary for each Bob (age 22), Carol (age 47) and Justin (age 14) with their name and age.
 people = {'Bob': {'Name': 'Bob', 'Age': 22}, 'Carol': {'Name': 'Carol', 'Age': 47}, 'Justin': {'Name': 'Justin', 'Age': 14}}
 
+for i in people.values():
+    print "Name: " + i['Name'] + ", Age: " + str(i['Age'])
+
 
 # 7. Create a function that takes two numbers (a and b) and prints the total value when they are added.
 def add(a, b):
