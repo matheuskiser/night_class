@@ -82,19 +82,48 @@ def recurrence(title, description, due_date):
             add_entry_daily(title, description, due_date)
         elif option == 2:
             """Repeat entry every 7 days for 3 weeks"""
+            add_entry_weekly(title, description, due_date)
 
-    # os.system('clear')
-    # print "Entry added."
+    os.system('clear')
+    print "Entry added."
 
 
 # Add every day recurrence
 def add_entry_daily(title, description, due_date):
+    # Convert due_date to date format in order to add days to date
     date_in_format = to_date_format(due_date)
     temp_date = date_in_format
+
+    # Create and save recurrence everyday 6 times
     for i in range(6):
+        # Add one day to date
         temp_date += datetime.timedelta(days=1)
+        # Convert date to string to save to database
         str_date = format_str(temp_date)
+        # Add entry to Calendar Entry
         recur_entry = CalendarEntry(title, description, str_date)
+        # Add CalendarEntry to Calendar
+        cal.append_entry(recur_entry)
+
+        # Saves to database
+        save_entry_db(title, description, temp_date)
+
+
+# Add weekly recurrence
+def add_entry_weekly(title, description, due_date):
+    # Convert due_date to date format in order to add days to date
+    date_in_format = to_date_format(due_date)
+    temp_date = date_in_format
+
+    # Create and save recurrence everyday 6 times
+    for i in range(1, 21, 7):
+        # Add 7 days to date
+        temp_date += datetime.timedelta(days=7)
+        # Convert date to string to save to database
+        str_date = format_str(temp_date)
+        # Add entry to Calendar Entry
+        recur_entry = CalendarEntry(title, description, str_date)
+        # Add CalendarEntry to Calendar
         cal.append_entry(recur_entry)
 
         # Saves to database
