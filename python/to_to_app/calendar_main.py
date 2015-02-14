@@ -6,31 +6,20 @@ class Calendar(object):
 
     def __init__(self):
         self.calendar_dictionary = []
+        self.today = None
+        self.start_week = None
+        self.end_week = None
+        self.get_today_date()
+        self.get_week_bound()
 
+    # Adds entry to Calendar list
     def append_entry(self, entry):
         self.calendar_dictionary.append(entry)
 
+    # Sorts calendar by ascending order by date
     def sort_calendar(self):
         cal = sorted(self.calendar_dictionary, key=operator.attrgetter('entry_due_date'))
         return cal
-
-    def print_calendar(self):
-
-        # Sort calendar_dictionary by due_date in ascending order
-        sorted_dictionary = self.sort_calendar()
-
-        # Outputs to user all entries formatted
-        print "All entries:"
-        temp_date = None
-        for i in sorted_dictionary:
-            # If current entry's due_date does not equal to previous entry, then output the date
-            if temp_date != i.get_due_date():
-                print "\nDATE: " + str(i.get_due_date()) + "\n"
-                print i
-            else:
-                print i
-
-            temp_date = i.get_due_date()
 
     # Convert argument to a different format. Returns string
     def format_str(self, from_var):
@@ -40,6 +29,7 @@ class Calendar(object):
     def to_date_format(self, from_var):
         return datetime.datetime.strptime(str(from_var), '%m/%d/%Y')
 
+    # Sets self.today to today's date
     def get_today_date(self):
         # Get today's date
         date = datetime.datetime.now().date()
@@ -48,17 +38,12 @@ class Calendar(object):
         # Convert now_date to datetime
         today_date = self.to_date_format(now_date_string)
 
-        return today_date
+        self.today = today_date
 
-    # Returns weekly calendar
-    def print_week_calendar(self):
-        sorted_dictionary = self.sort_calendar()
-
-        # Returns today's date in date format
-        today_date = self.get_today_date()
-
+    # Sets self.start_week and .end_week
+    def get_week_bound(self):
         # Calculate start and end of current week
-        start_week = today_date - datetime.timedelta(today_date.weekday()+1)
+        start_week = self.today - datetime.timedelta(self.today.weekday()+1)
         end_week = start_week + datetime.timedelta(6)
 
         # Convert start and end week dates
@@ -69,14 +54,24 @@ class Calendar(object):
         first_week = self.to_date_format(st_week)
         last_week = self.to_date_format(ed_week)
 
-        print "Current week's entries"
-        temp_date = None
+        # Set attributes to first and last week variables
+        self.start_week = first_week
+        self.end_week = last_week
 
+    # Prints entire calendar
+    def print_calendar(self):
+
+        # Sort calendar_dictionary by due_date in ascending order
+        sorted_dictionary = self.sort_calendar()
+
+        # Outputs to user all entries formatted
+        print "All entries:"
+        temp_date = None
         for i in sorted_dictionary:
             # Convert entry_date to datetime format
-            entry_date = datetime.datetime.strptime(str(i.get_due_date()), '%m/%d/%Y')
-            # If current entry's date is within current week, then print
-            if first_week <= entry_date <= last_week:
+            entry_date = self.to_date_format(i.get_due_date())
+            # If current entry's date is today or later
+            if entry_date >= self.today:
                 # If current entry's due_date does not equal to previous entry, then output the date
                 if temp_date != i.get_due_date():
                     print "\nDATE: " + str(i.get_due_date()) + "\n"
@@ -85,3 +80,26 @@ class Calendar(object):
                     print i
 
                 temp_date = i.get_due_date()
+
+    # Returns weekly calendar
+    def print_week_calendar(self):
+        # Sorts calendar dictionary to be ascending by date
+        sorted_dictionary = self.sort_calendar()
+
+        print "Current week's entries"
+        temp_date = None
+        for i in sorted_dictionary:
+            # Convert entry_date to datetime format
+            entry_date = self.to_date_format(i.get_due_date())
+            # If current entry's date is within current week, then print - and if it is today or in the future
+            if self.start_week <= entry_date <= self.end_week and entry_date >= self.today:
+                # If current entry's due_date does not equal to previous entry, then output the date
+                if temp_date != i.get_due_date():
+                    print "\nDATE: " + str(i.get_due_date()) + "\n"
+                    print i
+                else:
+                    print i
+
+                temp_date = i.get_due_date()
+
+    # R
