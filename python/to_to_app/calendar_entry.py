@@ -14,3 +14,7 @@ class CalendarEntry(object):
     # Returns entry's title
     def get_title(self):
         return self.entry_title
+
+    # Returns entry's description
+    def get_description(self):
+        return self.entry_description

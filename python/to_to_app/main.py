@@ -2,6 +2,7 @@ from calendar_main import Calendar
 from calendar_entry import CalendarEntry
 import os
 import sqlite3
+import datetime
 
 # Creates instances of Calendar and connects to database
 cal = Calendar()
@@ -62,7 +63,42 @@ def add_entry():
     save_entry_db(title, description, due_date)
 
     os.system('clear')
-    print "Entry added."
+
+    # Does recurrence logic
+    recurrence(title, description, due_date)
+
+
+# Recurrence logic
+def recurrence(title, description, due_date):
+    recur_entry = raw_input("Add recurrence? ").lower()
+
+    if recur_entry == 'yes' or recur_entry == 'y':
+        print "1. Every day (7 days max)"
+        print "2. Every week (3 weeks max)"
+        option = int(raw_input(">>> Pick option: "))
+
+        if option == 1:
+            """Repeat entry every day for 7 days"""
+            add_entry_daily(title, description, due_date)
+        elif option == 2:
+            """Repeat entry every 7 days for 3 weeks"""
+
+    # os.system('clear')
+    # print "Entry added."
+
+
+# Add every day recurrence
+def add_entry_daily(title, description, due_date):
+    date_in_format = to_date_format(due_date)
+    temp_date = date_in_format
+    for i in range(6):
+        temp_date += datetime.timedelta(days=1)
+        str_date = format_str(temp_date)
+        recur_entry = CalendarEntry(title, description, str_date)
+        cal.append_entry(recur_entry)
+
+        # Saves to database
+        save_entry_db(title, description, temp_date)
 
 
 # Remove entry from calendar
@@ -70,6 +106,21 @@ def remove_entry():
     print "Remove Entry:"
     entry = raw_input("Enter entry's title to remove: ")
     cal.remove_entry(entry)
+
+    # Delete from database
+    cursor.execute('''DELETE FROM entries WHERE title = ? ''', (entry,))
+
+    db.commit()
+
+
+# Convert argument to a different format. Returns string
+def format_str(from_var):
+    return from_var.strftime('%m/%d/%Y')
+
+
+# Convert argument to datetime format
+def to_date_format(from_var):
+    return datetime.datetime.strptime(str(from_var), '%m/%d/%Y')
 
 
 # Show current week's entries
