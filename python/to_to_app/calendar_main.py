@@ -32,27 +32,42 @@ class Calendar(object):
 
             temp_date = i.get_due_date()
 
-    def print_week_calendar(self):
-        sorted_dictionary = self.sort_calendar()
+    # Convert argument to a different format. Returns string
+    def format_str(self, from_var):
+        return datetime.datetime.strptime(str(from_var), "%Y-%m-%d").strftime('%m/%d/%Y')
 
+    # Convert argument to datetime format
+    def to_date_format(self, from_var):
+        return datetime.datetime.strptime(str(from_var), '%m/%d/%Y')
+
+    def get_today_date(self):
         # Get today's date
         date = datetime.datetime.now().date()
         # Convert date
-        now_date = datetime.datetime.strptime(str(date), "%Y-%m-%d").strftime('%m/%d/%Y')
+        now_date_string = self.format_str(date)
         # Convert now_date to datetime
-        curr_entry_date = datetime.datetime.strptime(str(now_date), '%m/%d/%Y')
+        today_date = self.to_date_format(now_date_string)
+
+        return today_date
+
+    # Returns weekly calendar
+    def print_week_calendar(self):
+        sorted_dictionary = self.sort_calendar()
+
+        # Returns today's date in date format
+        today_date = self.get_today_date()
 
         # Calculate start and end of current week
-        start_week = curr_entry_date - datetime.timedelta(curr_entry_date.weekday()+1)
+        start_week = today_date - datetime.timedelta(today_date.weekday()+1)
         end_week = start_week + datetime.timedelta(6)
 
         # Convert start and end week dates
-        st_week = datetime.datetime.strptime(str(start_week.date()), "%Y-%m-%d").date().strftime('%m/%d/%Y')
-        ed_week = datetime.datetime.strptime(str(end_week.date()), "%Y-%m-%d").date().strftime('%m/%d/%Y')
+        st_week = self.format_str(start_week.date())
+        ed_week = self.format_str(end_week.date())
 
         # Convert start and end week dates to datetime
-        first_week = datetime.datetime.strptime(str(st_week), '%m/%d/%Y')
-        last_week = datetime.datetime.strptime(str(ed_week), '%m/%d/%Y')
+        first_week = self.to_date_format(st_week)
+        last_week = self.to_date_format(ed_week)
 
         print "Current week's entries"
         temp_date = None
