@@ -10,3 +10,7 @@ class CalendarEntry(object):
     # Returns entry's due date
     def get_due_date(self):
         return self.entry_due_date
+
+    # Returns entry's title
+    def get_title(self):
+        return self.entry_title

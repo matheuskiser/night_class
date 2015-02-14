@@ -1,5 +1,6 @@
 import operator
 import datetime
+import os
 
 
 class Calendar(object):
@@ -91,8 +92,8 @@ class Calendar(object):
         for i in sorted_dictionary:
             # Convert entry_date to datetime format
             entry_date = self.to_date_format(i.get_due_date())
-            # If current entry's date is within current week, then print - and if it is today or in the future
-            if self.start_week <= entry_date <= self.end_week and entry_date >= self.today:
+            # If current entry's date is within current week, then print
+            if self.start_week <= entry_date <= self.end_week:
                 # If current entry's due_date does not equal to previous entry, then output the date
                 if temp_date != i.get_due_date():
                     print "\nDATE: " + str(i.get_due_date()) + "\n"
@@ -102,4 +103,11 @@ class Calendar(object):
 
                 temp_date = i.get_due_date()
 
-    # R
+    # Remove entry from calendar list
+    def remove_entry(self, entry_title):
+        for i in self.calendar_dictionary:
+            if i.get_title() == entry_title:
+                self.calendar_dictionary.remove(i)
+
+        os.system('clear')
+        print "'" + entry_title + "' entry has been deleted."

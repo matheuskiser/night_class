@@ -13,11 +13,12 @@ cursor = db.cursor()
 def display_menu():
     option = 0
 
-    while option != 4:
+    while option != 5:
         print "1. Add entry"
         print "2. Show calendar"
         print "3. Show weekly calendar"
-        print "4. Exit"
+        print "4. Remove entry"
+        print "5. Exit"
         option = int(raw_input(">> Select option: "))
         pick_option(option)
 
@@ -37,6 +38,10 @@ def pick_option(option):
         os.system('clear')
         show_week_calendar()
     elif option == 4:
+        """Remove Entry"""
+        os.system('clear')
+        remove_entry()
+    elif option == 5:
         """Quit Program"""
         os.system('clear')
         db.close()
@@ -58,6 +63,13 @@ def add_entry():
 
     os.system('clear')
     print "Entry added."
+
+
+# Remove entry from calendar
+def remove_entry():
+    print "Remove Entry:"
+    entry = raw_input("Enter entry's title to remove: ")
+    cal.remove_entry(entry)
 
 
 # Show current week's entries
