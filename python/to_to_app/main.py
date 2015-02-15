@@ -106,7 +106,7 @@ def add_entry_daily(title, description, due_date):
         cal.append_entry(recur_entry)
 
         # Saves to database
-        save_entry_db(title, description, temp_date)
+        save_entry_db(title, description, str_date)
 
 
 # Add weekly recurrence
