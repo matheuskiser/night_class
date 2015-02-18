@@ -14,12 +14,13 @@ cursor = db.cursor()
 def display_menu():
     option = 0
 
-    while option != 5:
+    while option != 6:
         print "1. Add entry"
         print "2. Show calendar"
         print "3. Show weekly calendar"
         print "4. Remove entry"
-        print "5. Exit"
+        print "5. Search"
+        print "6. Exit"
         option = int(raw_input(">> Select option: "))
         pick_option(option)
 
@@ -43,6 +44,10 @@ def pick_option(option):
         os.system('clear')
         remove_entry()
     elif option == 5:
+        """Search Entries"""
+        os.system('clear')
+        search_entries()
+    elif option == 6:
         """Quit Program"""
         os.system('clear')
         db.close()
@@ -140,6 +145,12 @@ def remove_entry():
     cursor.execute('''DELETE FROM entries WHERE title = ? ''', (entry,))
 
     db.commit()
+
+
+# Search entries from calendar
+def search_entries():
+    entry = raw_input("Enter entry's title to search: ")
+    cal.search_entry(entry)
 
 
 # Convert argument to a different format. Returns string

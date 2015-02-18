@@ -111,3 +111,21 @@ class Calendar(object):
 
         os.system('clear')
         print "'" + entry_title + "' entry has been deleted."
+
+    # Search entries in calendar dictionary
+    def search_entry(self, entry_title):
+        # Sorts calendar dictionary to be ascending by date
+        sorted_dictionary = self.sort_calendar()
+
+        print "Search results"
+        temp_date = None
+        for i in sorted_dictionary:
+            if i.get_title() == entry_title:
+                # If current entry's due_date does not equal to previous entry, then output the date
+                if temp_date != i.get_due_date():
+                    print "\nDATE: " + str(i.get_due_date()) + "\n"
+                    print i
+                else:
+                    print i
+
+                temp_date = i.get_due_date()
