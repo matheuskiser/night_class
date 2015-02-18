@@ -28,10 +28,10 @@ class Calendar(Utils):
         # Get today's date
         date = datetime.datetime.now().date()
         # Convert date
-        now_date_string = Utils.format_str(self, date)
+        now_date_string = self.format_str(date)
         # Convert now_date to datetime
         today_date = self.to_date_format(now_date_string)
-
+        # Sets result to today attribute
         self.today = today_date
 
     # Sets self.start_week and .end_week
