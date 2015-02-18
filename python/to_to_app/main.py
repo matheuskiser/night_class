@@ -57,6 +57,8 @@ def pick_option(option):
 # Adds calendar entry to CalendarEntry class and saves entry to database
 def add_entry():
     print "Add Entry:"
+
+    # User input
     title = raw_input("Title: ")
     description = raw_input("Description: ")
     due_date = raw_input("Due Date: (mm/dd/yyyy): ")
