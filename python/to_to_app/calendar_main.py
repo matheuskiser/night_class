@@ -1,9 +1,10 @@
 import operator
 import datetime
 import os
+from utils import Utils
 
 
-class Calendar(object):
+class Calendar(Utils):
 
     def __init__(self):
         self.calendar_dictionary = []
@@ -22,20 +23,12 @@ class Calendar(object):
         cal = sorted(self.calendar_dictionary, key=operator.attrgetter('entry_due_date'))
         return cal
 
-    # Convert argument to a different format. Returns string
-    def format_str(self, from_var):
-        return from_var.strftime('%m/%d/%Y')
-
-    # Convert argument to datetime format
-    def to_date_format(self, from_var):
-        return datetime.datetime.strptime(str(from_var), '%m/%d/%Y')
-
     # Sets self.today to today's date
     def get_today_date(self):
         # Get today's date
         date = datetime.datetime.now().date()
         # Convert date
-        now_date_string = self.format_str(date)
+        now_date_string = Utils.format_str(self, date)
         # Convert now_date to datetime
         today_date = self.to_date_format(now_date_string)
 

@@ -3,11 +3,15 @@ from calendar_entry import CalendarEntry
 import os
 import sqlite3
 import datetime
+from utils import Utils
 
 # Creates instances of Calendar and connects to database
 cal = Calendar()
 db = sqlite3.connect('calendar_db')
 cursor = db.cursor()
+
+# Creates instance of utility file
+util = Utils()
 
 
 # Show menu to user until user exits
@@ -100,7 +104,7 @@ def recurrence(title, description, due_date):
 # Add every day recurrence
 def add_entry_daily(title, description, due_date):
     # Convert due_date to date format in order to add days to date
-    date_in_format = to_date_format(due_date)
+    date_in_format = util.to_date_format(due_date)
     temp_date = date_in_format
 
     # Create and save recurrence everyday 6 times
@@ -108,7 +112,7 @@ def add_entry_daily(title, description, due_date):
         # Add one day to date
         temp_date += datetime.timedelta(days=1)
         # Convert date to string to save to database
-        str_date = format_str(temp_date)
+        str_date = util.format_str(temp_date)
         # Add entry to Calendar Entry
         recur_entry = CalendarEntry(title, description, str_date)
         # Add CalendarEntry to Calendar
@@ -121,7 +125,7 @@ def add_entry_daily(title, description, due_date):
 # Add weekly recurrence
 def add_entry_weekly(title, description, due_date):
     # Convert due_date to date format in order to add days to date
-    date_in_format = to_date_format(due_date)
+    date_in_format = util.to_date_format(due_date)
     temp_date = date_in_format
 
     # Create and save recurrence everyday 6 times
@@ -129,7 +133,7 @@ def add_entry_weekly(title, description, due_date):
         # Add 7 days to date
         temp_date += datetime.timedelta(days=7)
         # Convert date to string to save to database
-        str_date = format_str(temp_date)
+        str_date = util.format_str(temp_date)
         # Add entry to Calendar Entry
         recur_entry = CalendarEntry(title, description, str_date)
         # Add CalendarEntry to Calendar
@@ -155,16 +159,6 @@ def remove_entry():
 def search_entries():
     entry = raw_input("Enter entry's title to search: ")
     cal.search_entry(entry)
-
-
-# Convert argument to a different format. Returns string
-def format_str(from_var):
-    return from_var.strftime('%m/%d/%Y')
-
-
-# Convert argument to datetime format
-def to_date_format(from_var):
-    return datetime.datetime.strptime(str(from_var), '%m/%d/%Y')
 
 
 # Show current week's entries
