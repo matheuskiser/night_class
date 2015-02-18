@@ -104,6 +104,7 @@ class Calendar(object):
 
                 temp_date = i.get_due_date()
 
+    # Creates a list comprehension with only items that are not the ones to be removed
     def remove_values_from_list(self, the_list, val):
         return [value for value in the_list if value.get_title() != val]
 
@@ -148,7 +149,3 @@ class Calendar(object):
 
         if not found:
             print "No entries found."
-
-    def enum_cal(self):
-        for i in enumerate(self.calendar_dictionary):
-            print i
