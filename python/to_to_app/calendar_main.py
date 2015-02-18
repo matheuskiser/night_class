@@ -84,6 +84,7 @@ class Calendar(object):
 
     # Returns weekly calendar
     def print_week_calendar(self):
+
         # Sorts calendar dictionary to be ascending by date
         sorted_dictionary = self.sort_calendar()
 
@@ -103,24 +104,39 @@ class Calendar(object):
 
                 temp_date = i.get_due_date()
 
+    def remove_values_from_list(self, the_list, val):
+        return [value for value in the_list if value.get_title() != val]
+
     # Remove entry from calendar list
     def remove_entry(self, entry_title):
-        for i in self.calendar_dictionary:
-            if i.get_title() == entry_title:
-                self.calendar_dictionary.remove(i)
 
-        os.system('clear')
-        print "'" + entry_title + "' entry has been deleted."
+        # Records length of list before remove
+        len_orig = len(self.calendar_dictionary)
+
+        # Removes all entry_title from calendar list, then resets calendar
+        x = self.remove_values_from_list(self.calendar_dictionary, entry_title)
+        self.calendar_dictionary = x
+
+        # Check if length of previous list is less than list after remove
+        if len_orig > len(self.calendar_dictionary):
+            os.system('clear')
+            print "'" + entry_title + "' entry has been deleted."
+        else:
+            print "No entry found."
 
     # Search entries in calendar dictionary
     def search_entry(self, entry_title):
+        # If result comes up with something, then true
+        found = False
+
         # Sorts calendar dictionary to be ascending by date
         sorted_dictionary = self.sort_calendar()
 
         print "Search results"
         temp_date = None
         for i in sorted_dictionary:
-            if i.get_title() == entry_title:
+            if i.get_title().lower() == entry_title.lower():
+                found = True
                 # If current entry's due_date does not equal to previous entry, then output the date
                 if temp_date != i.get_due_date():
                     print "\nDATE: " + str(i.get_due_date()) + "\n"
@@ -129,3 +145,10 @@ class Calendar(object):
                     print i
 
                 temp_date = i.get_due_date()
+
+        if not found:
+            print "No entries found."
+
+    def enum_cal(self):
+        for i in enumerate(self.calendar_dictionary):
+            print i

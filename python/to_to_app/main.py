@@ -47,6 +47,8 @@ def pick_option(option):
         """Search Entries"""
         os.system('clear')
         search_entries()
+    elif option == 10:
+        cal.enum_cal()
     elif option == 6:
         """Quit Program"""
         os.system('clear')
@@ -81,7 +83,7 @@ def recurrence(title, description, due_date):
 
     if recur_entry == 'yes' or recur_entry == 'y':
         print "1. Every day (7 days max)"
-        print "2. Every week (3 weeks max)"
+        print "2. Every week (4 weeks max)"
         option = int(raw_input(">>> Pick option: "))
 
         if option == 1:
