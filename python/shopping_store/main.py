@@ -92,10 +92,11 @@ def search_item():
             # If user is trying to buy more qty than store has
             while user_qty > item_qty:
                 print "Sorry, quantity entered is too high. Try again"
-                user_qty = raw_input("How many? ")
+                user_qty = int(raw_input("How many? "))
 
             user.add_to_cart(item_name, store.get_single_item_cost(item_name), user_qty)
             store.remove_qty_from_item(item_name, user_qty)
+            print "Item added to cart."
         else:
             print "Item not in stock."
 
@@ -125,6 +126,9 @@ def checkout():
         user.buy_item(cart_list)
         # Checkout store
         store.buy_item(cart_list)
+
+        print "Thanks for shopping!"
+        exit(0)
 
 
 intro()
