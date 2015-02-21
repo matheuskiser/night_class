@@ -4,6 +4,11 @@ from store import Store
 
 import os
 
+# TODO: Load items from catalog to program
+# TODO: Store user credentials in database
+# TODO: Authenticate user
+# TODO: Save items and quantities to database
+
 # Starts store and sets up all items
 store = Store("Fred Meyer", "Portland, OR", 100)
 store.store_setup()
