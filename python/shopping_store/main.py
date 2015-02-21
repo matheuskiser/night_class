@@ -27,7 +27,7 @@ def user_login():
     name = raw_input("Name: ")
     email = raw_input("Email: ")
     password = raw_input("Password: ")
-    cash = int(raw_input("How much money do you have? "))
+    cash = float(raw_input("How much money do you have? "))
 
     # Logs in user with the store
     Login(email, password)
@@ -46,8 +46,8 @@ def user_menu():
         print "Menu"
         print "==================================="
         print "1. Browse all items"
-        print "2. Buy item"
-        print "3. View carts"
+        print "2. Search"
+        print "3. User account"
         print "4. Checkout"
         print "5. Exit"
         option = int(raw_input("Pick an option: "))
@@ -59,12 +59,14 @@ def user_pick_menu_option(option):
         """Show Items"""
         show_items()
     elif option == 2:
-        """Buy Item"""
-        buy_item()
+        """Search item"""
+        search_item()
     elif option == 3:
-        """View Carts"""
+        """Show account info"""
+        display_user_account()
     elif option == 4:
         """Checkout"""
+        checkout()
     elif option == 5:
         """Exit Program"""
         clear()
@@ -73,19 +75,60 @@ def user_pick_menu_option(option):
 
 def show_items():
     clear()
-    store.get_all_items()
+    store.display_all_items()
 
 
-def buy_item():
+def search_item():
     clear()
+    item_name = raw_input("Search item: ")
+    store.display_single_item(item_name)
+    choice = raw_input("Buy item? (y/n): ")
 
-    item_name = raw_input("What item do you want to buy? ")
-    item_qty = raw_input("How many? ")
+    if choice.lower() == "y" or choice.lower() == "yes":
+        user_qty = int(raw_input("How many? "))
+        item_qty = store.get_item_qty(item_name)
 
-    store.buy_item(item_name, item_qty)
-    # user.buy_item()
+        if item_qty != 0:
+            # If user is trying to buy more qty than store has
+            while user_qty > item_qty:
+                print "Sorry, quantity entered is too high. Try again"
+                user_qty = raw_input("How many? ")
+
+            user.add_to_cart(item_name, store.get_single_item_cost(item_name), user_qty)
+            store.remove_qty_from_item(item_name, user_qty)
+        else:
+            print "Item not in stock."
+
+
+def display_user_account():
+    user.display_user_account_info()
+
+
+def checkout():
+    clear()
+    cart_list = user.return_cart_list()
+
+    print "Here is your shopping cart..."
+    if len(cart_list) == 0:
+        print "No items in shopping cart"
+    else:
+        print "=========================================================="
+        for i in cart_list:
+            print i[0] + "   $" + str(i[1]) + "   " + str(i[2]) + " units"
+        print "=========================================================="
+        print "Total: $" + str(user.display_shopping_cart_total())
+
+    wants_checkout = raw_input("Are you sure you want to checkout? ")
+    if wants_checkout.lower() == "y" or wants_checkout.lower() == "yes":
+
+        # Checkout user
+        user.buy_item(cart_list)
+        # Checkout store
+        store.buy_item(cart_list)
 
 
 intro()
 
 user_menu()
+
+9.5

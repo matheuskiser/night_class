@@ -11,9 +11,14 @@ class Store(object):
     def add_item(self, item):
         self.items.append(item)
 
-    def get_all_items(self):
+    def display_all_items(self):
         for i in self.items:
             print i.item_name, i.item_cost, i.item_qty
+
+    def remove_qty_from_item(self, item_name, item_qty):
+        for i in self.items:
+            if i.item_name == item_name:
+                i.item_qty -= item_qty
 
     def store_setup(self):
         banana = Items("Banana", 1.85, 10)
@@ -24,9 +29,33 @@ class Store(object):
         self.add_item(apple)
         self.add_item(cookie)
 
-    def buy_item(self, name, qty):
+    def buy_item(self, shopping_cart):
+        total_amount = 0.00
+
+        for i in shopping_cart:
+            self.remove_qty_from_item(i[0], i[1])
+            total_amount += float(i[1]) * float(i[2])
+
+        self.store_cash += total_amount
+
+    def display_single_item(self, title):
         for i in self.items:
-            if i.item_name == name:
-                i.item_qty -= int(qty)
-                total_sale = i.item_qty * i.item_cost
-                self.store_cash += total_sale
+            if i.item_name == title:
+                print "Name: " + i.item_name
+                print "Cost: " + str(i.item_cost)
+                print "Stock: " + str(i.item_qty)
+
+    def get_single_item_cost(self, title):
+        for i in self.items:
+            if i.item_name == title:
+                return i.item_cost
+
+    def get_item_qty(self, title):
+        for i in self.items:
+            if i.item_name == title:
+                return i.item_qty
+
+    def return_item(self, title):
+        for i in self.items:
+            if i.item_name == title:
+                return i
