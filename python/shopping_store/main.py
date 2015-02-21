@@ -72,7 +72,7 @@ def user_pick_menu_option(option):
 
 
 def show_items():
-    #clear()
+    clear()
     store.get_all_items()
 
 
@@ -83,7 +83,7 @@ def buy_item():
     item_qty = raw_input("How many? ")
 
     store.buy_item(item_name, item_qty)
-    show_items()
+    # user.buy_item()
 
 
 intro()

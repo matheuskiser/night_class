@@ -28,3 +28,5 @@ class Store(object):
         for i in self.items:
             if i.item_name == name:
                 i.item_qty -= int(qty)
+                total_sale = i.item_qty * i.item_cost
+                self.store_cash += total_sale
