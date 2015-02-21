@@ -134,5 +134,3 @@ def checkout():
 intro()
 
 user_menu()
-
-9.5
