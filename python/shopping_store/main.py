@@ -3,11 +3,15 @@ from login import Login
 from store import Store
 
 import os
+import sqlite3
 
 # TODO: Load items from catalog to program
-# TODO: Store user credentials in database
 # TODO: Authenticate user
 # TODO: Save items and quantities to database
+
+# Creates instance of database
+db = sqlite3.connect('store_db')
+cursor = db.cursor()
 
 # Starts store and sets up all items
 store = Store("Fred Meyer", "Portland, OR", 100)
@@ -17,6 +21,41 @@ store.store_setup()
 user = Shopper()
 
 
+# Starts database
+def start_db():
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS users(ID INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT, first_name TEXT, cash TEXT)
+    ''')
+    db.commit()
+
+
+# Gets arguments to store a new entry to database
+def save_entry_db(username, password, name, cash):
+    # Insert entry
+    cursor.execute('''INSERT INTO users(username, password, first_name, cash) VALUES(?,?,?,?)''', (username, password, name, cash))
+    db.commit()
+
+
+# Reads the database, gets logged in user
+def login_create_user(user_name, password):
+    # Tries to login with given credentials. If username does not exist, throw error
+    try:
+        cursor.execute("SELECT * FROM users WHERE username=?", [user_name])
+        user_db = cursor.fetchone()
+
+        # Checks user's password with what is in db
+        if password == user_db[2]:
+            user.create_user(user_db[3], user_db[1], user_db[2], user_db[4])
+        else:
+            clear()
+            print "Incorrect login. Try again!"
+            user_login()
+    except TypeError:
+        clear()
+        print "Incorrect login. Try again!"
+        user_login()
+
+
 def clear():
     os.system('clear')
 
@@ -24,21 +63,39 @@ def clear():
 def intro():
     clear()
     print "Welcome to Fred Meyer!"
-    user_login()
+    has_account = raw_input("Do you already have an account? (y/n) ")
+    if has_account.lower() == "y" or has_account.lower() == "yes":
+        user_login()
+    else:
+        user_register()
 
 
-def user_login():
-    print "To login, enter you credentials below"
+def user_register():
+    print "To register, enter the following information"
     name = raw_input("Name: ")
     email = raw_input("Email: ")
     password = raw_input("Password: ")
     cash = float(raw_input("How much money do you have? "))
 
+    # Create user in class
+    user.create_user(name, email, password, cash)
+    # Creates user in db
+    save_entry_db(email, password, name, cash)
+
+    clear()
+    user_login()
+
+
+def user_login():
+    print "To login, enter you credentials below"
+    email = raw_input("Email: ")
+    password = raw_input("Password: ")
+
+    # Create shopper from database
+    login_create_user(email, password)
+
     # Logs in user with the store
     Login(email, password)
-
-    # Get user
-    user.create_user(name, email, password, cash)
 
 
 def user_menu():
@@ -135,6 +192,8 @@ def checkout():
         print "Thanks for shopping!"
         exit(0)
 
+
+start_db()
 
 intro()
 
