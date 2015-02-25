@@ -22,6 +22,9 @@ user = Shopper()
 # Initializes login class
 login = Login()
 
+# Global variables
+name = ""
+
 
 def clear():
     os.system('clear')
@@ -111,7 +114,7 @@ def search_item():
                 print "Sorry, quantity entered is too high. Try again"
                 user_qty = int(raw_input("How many? "))
 
-            user.add_to_cart(item_name, store.get_single_item_cost(item_name), user_qty)
+            user.shopping_cart.add_to_cart(login.get_id(user.get_username()), item_name, store.get_single_item_cost(item_name), user_qty)
             store.remove_qty_from_item(item_name, user_qty)
             print "Item added to cart."
         else:
@@ -124,28 +127,27 @@ def display_user_account():
 
 def checkout():
     clear()
-    cart_list = user.return_cart_list()
+    cart_list = user.shopping_cart.return_cart_list(user.get_username())
 
     print "Here is your shopping cart..."
-    if len(cart_list) == 0:
+    if not cart_list:
         print "No items in shopping cart"
     else:
         print "=========================================================="
-        for i in cart_list:
-            print i[0] + "   $" + str(i[1]) + "   " + str(i[2]) + " units"
+        print cart_list[2] + "   $" + str(cart_list[3]) + "   " + str(cart_list[4]) + " unit(s)"
         print "=========================================================="
-        print "Total: $" + str(user.display_shopping_cart_total())
+        print "Total: $" + str(user.shopping_cart.display_shopping_cart_total())
 
-    wants_checkout = raw_input("Are you sure you want to checkout? ")
-    if wants_checkout.lower() == "y" or wants_checkout.lower() == "yes":
+        wants_checkout = raw_input("Are you sure you want to checkout? ")
+        if wants_checkout.lower() == "y" or wants_checkout.lower() == "yes":
 
-        # Checkout user
-        user.buy_item(cart_list)
-        # Checkout store
-        store.buy_item(cart_list)
+            # Checkout user
+            user.buy_item(cart_list)
+            # Checkout store
+            store.buy_item(cart_list)
 
-        print "Thanks for shopping!"
-        exit(0)
+            print "Thanks for shopping!"
+            exit(0)
 
 
 intro()

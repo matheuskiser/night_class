@@ -1,8 +1,6 @@
 import sqlite3
 import os
 
-from shopper import Shopper
-
 
 class Login(object):
     def __init__(self):
@@ -23,6 +21,12 @@ class Login(object):
     def login_factory(self, email, password):
         self.cred_email = email
         self.cred_password = password
+
+    # Returns user's db ID
+    def get_id(self, user_name):
+        self.cursor.execute("SELECT ID FROM users WHERE username=?", [user_name])
+        user_id = self.cursor.fetchone()
+        return user_id[0]
 
     # Starts user's database
     def start_db(self):
@@ -47,7 +51,7 @@ class Login(object):
             # Checks user's password with what is in db
             if password == user_db[2]:
                 # shopper = Shopper()
-                shopper_obj.create_user(user_db[3], user_db[1], user_db[2], user_db[4])
+                shopper_obj.create_user(user_db[3], user_db[1], user_db[2], float(user_db[4]))
             else:
                 self.clear()
                 print "Incorrect login. Try again!"
