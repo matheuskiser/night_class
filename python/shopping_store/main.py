@@ -32,7 +32,7 @@ def intro():
     print "Welcome to Fred Meyer!"
     has_account = raw_input("Do you already have an account? (y/n) ")
     if has_account.lower() == "y" or has_account.lower() == "yes":
-        login.user_login()
+        login.user_login(user)
     else:
         user_register()
 
@@ -50,7 +50,7 @@ def user_register():
     login.save_entry_db(email, password, name, cash)
 
     clear()
-    login.user_login()
+    login.user_login(user)
 
 
 def user_menu():
