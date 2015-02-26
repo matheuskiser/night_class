@@ -39,10 +39,12 @@ class Cart():
     def display_shopping_cart_total(self):
         total_amount = 0.00
 
-        for i in self.shopping_cart:
-            total_amount += float(i[1]) * float(i[2])
+        print self.shopping_cart
 
-        return total_amount
+        # for i, value in self.shopping_cart:
+        #     # total_amount += float(value[1]) * float(value[2])
+
+        # return total_amount
 
     def create_shopping_cart(self, user_name):
         # Gets data from cart db to get user ID

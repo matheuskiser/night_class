@@ -129,14 +129,17 @@ def checkout():
     clear()
     cart_list = user.shopping_cart.return_cart_list(user.get_username())
 
+    total_amount = 0.00
+
     print "Here is your shopping cart..."
     if not cart_list:
         print "No items in shopping cart"
     else:
         print "=========================================================="
+
         print cart_list[2] + "   $" + str(cart_list[3]) + "   " + str(cart_list[4]) + " unit(s)"
         print "=========================================================="
-        print "Total: $" + str(user.shopping_cart.display_shopping_cart_total())
+        print "Total: $" + str(cart_list[3] * cart_list[4])
 
         wants_checkout = raw_input("Are you sure you want to checkout? ")
         if wants_checkout.lower() == "y" or wants_checkout.lower() == "yes":
