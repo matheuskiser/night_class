@@ -52,7 +52,9 @@ class User(Cart):
         self.print_shopping_cart(self.username)
 
     def checkout_cart(self, user_id):
-        wants_checkout = raw_input("Are you sure you want to checkout? ")
+        # Display user's cart
+        self.print_shopping_cart(self.username)
+        wants_checkout = raw_input("\nAre you sure you want to checkout? ")
         if wants_checkout.lower() == "y" or wants_checkout.lower() == "yes":
             # Gets cart total, removes cash, and empties cart
             cart_total = self.get_cart_total_amount(user_id)

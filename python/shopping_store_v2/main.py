@@ -24,6 +24,7 @@ def clear():
 
 
 def user_menu():
+    clear()
     option = 0
     while option != 5:
         print "==================================="

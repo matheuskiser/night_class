@@ -56,8 +56,9 @@ class Login(object):
             self.login_dialog()
 
     def login_dialog(self):
+        self.clear()
         print "To login, enter you credentials below"
-        email = raw_input("Email: ")
+        email = raw_input("Username: ")
         password = raw_input("Password: ")
 
         # Makes temp app user
@@ -66,9 +67,10 @@ class Login(object):
         self.login_user(email, password)
 
     def user_register(self):
+        self.clear()
         print "To register, enter the following information"
         name = raw_input("Name: ")
-        email = raw_input("Email: ")
+        email = raw_input("Username: ")
         password = raw_input("Password: ")
         cash = float(raw_input("How much money do you have? "))
 
@@ -78,6 +80,7 @@ class Login(object):
         self.login_dialog()
 
     def intro(self):
+        self.clear()
         print "Welcome to Fred Meyer!"
         has_account = raw_input("Do you already have an account? (y/n) ")
         if has_account.lower() == "y" or has_account.lower() == "yes":
