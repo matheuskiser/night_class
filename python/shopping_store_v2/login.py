@@ -1,5 +1,6 @@
 import sqlite3
 import os
+import getpass
 
 from user import User
 
@@ -59,7 +60,7 @@ class Login(object):
         self.clear()
         print "To login, enter you credentials below"
         email = raw_input("Username: ")
-        password = raw_input("Password: ")
+        password = getpass.getpass("Password: ")
 
         # Makes temp app user
         self.user.create_app_user(email, password)
@@ -71,7 +72,7 @@ class Login(object):
         print "To register, enter the following information"
         name = raw_input("Name: ")
         email = raw_input("Username: ")
-        password = raw_input("Password: ")
+        password = getpass.getpass("Password: ")
         cash = float(raw_input("How much money do you have? "))
 
         # Creates user in db
