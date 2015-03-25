@@ -15,6 +15,9 @@ class IndexView(generic.ListView):
     template_name = 'polls/index.html'
     context_object_name = 'latest_question_list'
 
+    #TODO: query the UserProfile model to return the picture property from the related user
+    # and send that data to the context processor
+
     def get_queryset(self):
         """
         Return the last five published questions (not including those set to be

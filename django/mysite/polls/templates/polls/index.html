@@ -19,6 +19,8 @@
 <h1>Polls says... hello world!</h1>
 {% endif %}
 
+<!-- img src="{{ STATIC_URL }}/polls/profile_images/{{ get picture property from the User related UserProfile }}" -->
+
 {% if user.is_authenticated %}
 <a href="/polls/restricted/">Restricted Page</a><br />
 <a href="/polls/logout/">Logout</a><br />
