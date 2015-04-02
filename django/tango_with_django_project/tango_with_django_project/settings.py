@@ -1,5 +1,5 @@
 """
-Django settings for pointme project.
+Django settings for tango_with_django_project project.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/1.7/topics/settings/
@@ -17,7 +17,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '8t^vvsji6js6d4v*g3hfufo)b=^t(7obym7hm^*dbti@56an9a'
+SECRET_KEY = '^8o5tct%t#c0uasvi7ei7(44@ptty&!hoo^-7!d*fv+g47iopn'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -25,6 +25,15 @@ DEBUG = True
 TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
+
+TEMPLATE_PATH = os.path.join(BASE_DIR, 'templates')
+
+TEMPLATE_DIRS = (
+    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
+    # Always use forward slashes, even on Windows.
+    # Don't forget to use absolute paths, not relative paths.
+    TEMPLATE_PATH,
+)
 
 
 # Application definition
@@ -36,8 +45,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'points',
-    'registration',
+    'rango',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -50,9 +58,11 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'pointme.urls'
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
-WSGI_APPLICATION = 'pointme.wsgi.application'
+ROOT_URLCONF = 'tango_with_django_project.urls'
+
+WSGI_APPLICATION = 'tango_with_django_project.wsgi.application'
 
 
 # Database
@@ -82,13 +92,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_PATH = os.path.join(BASE_DIR,'static')
 
+STATIC_URL = '/static/' # You may find this is already defined as such.
 
-# Registration variables
-REGISTRATION_OPEN = True        # If True, users can register
-ACCOUNT_ACTIVATION_DAYS = 7     # One-week activation window; you may, of course, use a different value.
-REGISTRATION_AUTO_LOGIN = True  # If True, the user will be automatically logged in.
-LOGIN_REDIRECT_URL = '/points/'  # The page you want users to arrive at after they successful log in
-LOGIN_URL = '/accounts/login/'  # The page users are directed to if they are not logged in,
-                                # and are trying to access pages requiring authentication
+STATICFILES_DIRS = (
+    STATIC_PATH,
+)
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media') # Absolute path to the media directory
+
+LOGIN_URL = '/rango/login/'

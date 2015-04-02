@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Rango{% endblock %}
+
+{% block body_block %}
+
+    {% if user.is_authenticated %}
+        <h1>Rango says... hello {{ user.username }}!</h1>
+    {% else %}
+        <h1>Rango says... hello world!</h1>
+    {% endif %}
+
+    {% if categories %}
+        <ul>
+            {% for category in categories %}
+                <li><a href="{% url 'category'  category.slug %}">{{ category.name }}</a></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <strong>There are no categories present.</strong>
+    {% endif %}
+
+    <p> Visits: {{ visits }}</p>
+    <p> Last Visit: {{ last_visit_time }}</p>
+
+{% endblock %}
