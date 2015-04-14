@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Point Me</title>
+    </head>
+
+    <body>
+        {% block body_block %}{% endblock %}
+
+        {% if user.is_authenticated %}
+        <a href="{% url 'auth_logout' %}?next=/accounts/login/">Logout</a><br>
+        <a href="/points/add_place/">Add a New Place</a><br>
+        <a href="/points/my_places/">View My Places</a><br>
+        {% else %}
+        <a href="{% url 'registration_register' %}">Register</a><br>
+        <a href="{% url 'auth_login' %}">Login</a><br>
+        {% endif %}
+    <a href="/points/">Homepage</a><br>
+    <a href="/points/map_view/">Map</a><br>
+    </body>
+</html>
