@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Geolocation</title>
+    <title>Map View</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <style>
@@ -12,86 +12,104 @@
             padding: 0px
         }
     </style>
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
 
-    <script>
-        // Note: This example requires that you consent to location sharing when
-        // prompted by your browser. If you see a blank space instead of the map, this
-        // is probably because you have denied permission for location sharing.
-
-        var map;
-
-        function initialize() {
-            var mapOptions = {
-                zoom: 15
-            };
-            map = new google.maps.Map(document.getElementById('map-canvas'),
-                    mapOptions);
-
-            // Try HTML5 geolocation
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function (position) {
-                    var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-                    map.setCenter(pos);
-
-                    codeAddress();
-                }, function () {
-                    handleNoGeolocation(true);
-                });
-            } else {
-                // Browser doesn't support Geolocation
-                handleNoGeolocation(false);
-            }
-        }
-
-        function handleNoGeolocation(errorFlag) {
-            if (errorFlag) {
-                var content = 'Error: The Geolocation service failed.';
-            } else {
-                var content = 'Error: Your browser doesn\'t support geolocation.';
-            }
-
-            var options = {
-                map: map,
-                position: new google.maps.LatLng(60, 105),
-                content: content
-            };
-
-            var infowindow = new google.maps.InfoWindow(options);
-            map.setCenter(options.position);
-        }
-
-        function codeAddress() {
-            var address = "19000 NW Evergreen Pkwy Hillsboro, OR 97124";
-            var geocoder = new google.maps.Geocoder();
-            geocoder.geocode({'address': address}, function (results, status) {
-                if (status == google.maps.GeocoderStatus.OK) {
-
-                    var marker = new google.maps.Marker({
-                        map: map,
-                        position: results[0].geometry.location,
-                        title: address
-                    });
-
-                    var infowindow = new google.maps.InfoWindow({
-                        content: address
-                    });
-
-                    google.maps.event.addListener(marker, 'click', function () {
-                        infowindow.open(map, marker);
-                    });
-
-                } else {
-                    alert("Geocode was not successful for the following reason: " + status);
-                }
-            });
-        }
-
-        google.maps.event.addDomListener(window, 'load', initialize);
-
-    </script>
 </head>
 <body>
 <div id="map-canvas"></div>
+
+<br>
+{% if user.is_authenticated %}
+<a href="{% url 'auth_logout' %}?next=/accounts/login/">Logout</a><br>
+<a href="/points/add_place/">Add a New Place</a><br>
+<a href="/points/my_places/">View My Places</a><br>
+{% else %}
+<a href="{% url 'registration_register' %}">Register</a><br>
+<a href="{% url 'auth_login' %}">Login</a><br>
+{% endif %}
+
+<a href="/points/">Homepage</a><br>
+<a href="/points/map_view/">Map</a><br>
+
+
+<script type="text/javascript">
+    var infowindow = new google.maps.InfoWindow();
+    var geocoder = new google.maps.Geocoder();
+    var marker, i;
+
+    var map = new google.maps.Map(document.getElementById('map-canvas'), {
+        zoom: 10,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+
+    // Gets ViewPort lat and long
+    google.maps.event.addListener(map, 'bounds_changed', function () {
+        var upper_left_lat = map.getBounds().getNorthEast().lat();
+        var upper_left_lng = map.getBounds().getNorthEast().lng();
+        var lower_left_lat = map.getBounds().getSouthWest().lat();
+        var lower_left_lng = map.getBounds().getSouthWest().lng();
+
+        $.ajax({
+            method: 'GET',
+            url: '',
+            data: {
+                'upper_left_lat': upper_left_lat,
+                'upper_left_lng': upper_left_lng,
+                'lower_left_lat': lower_left_lat,
+                'lower_left_lng': lower_left_lng
+            },
+            success: function (data) {
+                json_data = jQuery.parseJSON(data);
+                address = json_data['places'];
+                for (i = 0; i < address.length; i++) {
+                    console.log(address[i]);
+                    geocodeAddress(address[i]);
+                }
+            },
+            error: function (data) {
+                alert("it didnt work");
+            }
+        });
+    });
+
+    // Sets map to center at current location
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+            map.setCenter(pos);
+        });
+    }
+
+
+    function geocodeAddress(address) {
+        geocoder.geocode({'address': address}, function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                createMarker(results[0].geometry.location, address);
+            }
+            else {
+                alert("Some problem in geocode - " + status);
+            }
+        });
+    }
+
+    function createMarker(latlng, html) {
+        var marker = new google.maps.Marker({
+            position: latlng,
+            map: map
+        });
+
+        google.maps.event.addListener(marker, 'mouseover', function () {
+            infowindow.setContent(html);
+            infowindow.open(map, marker);
+        });
+
+        google.maps.event.addListener(marker, 'mouseout', function () {
+            infowindow.close();
+        });
+    }
+
+
+</script>
 </body>
 </html>

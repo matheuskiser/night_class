@@ -7,6 +7,8 @@ class Place(models.Model):
     address = models.CharField(max_length=300)
     name = models.CharField(max_length=100)
     rating = models.IntegerField(default=0)
+    latitude = models.FloatField(default=0)
+    longitude = models.FloatField(default=0)
 
     def __str__(self):
         return self.name

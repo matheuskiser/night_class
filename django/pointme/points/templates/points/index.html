@@ -4,10 +4,11 @@
 
 {% block body_block %}
 
-    <h1>All available places!</h1>
+    <h1>Hi, {{ user.username }}!</h1>
+    <h2>All available places!</h2>
     <ul>
         {% for place in places %}
-        <li>{{ place.name }} - {{ place.address }}<br>{{ place.author }} - {{ place.rating }}</li><br>
+        <li>{{ place.name }} - {{ place.address }}<br>{{ place.author }} - {{ place.rating }}<br>{{ place.latitude }}, {{ place.longitude }}</li><br>
         {% endfor %}
     </ul>
 

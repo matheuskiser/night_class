@@ -10,4 +10,4 @@ class PlaceForm(forms.ModelForm):
     class Meta:
         # Provide an association between the ModelForm and a model
         model = Place
-        exclude = ['author']
+        exclude = ['author', 'latitude', 'longitude']
