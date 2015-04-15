@@ -8,8 +8,8 @@
         html, body, #map-canvas {
             height: 80%;
             width: 90%;
-            margin: 0px;
-            padding: 0px
+            margin: 0;
+            padding: 0;
         }
     </style>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
@@ -18,6 +18,11 @@
 </head>
 <body>
 <div id="map-canvas"></div>
+<div>
+
+    <ul id="place-list"></ul>
+
+</div>
 
 <br>
 {% if user.is_authenticated %}
@@ -43,6 +48,14 @@
         mapTypeId: google.maps.MapTypeId.ROADMAP
     });
 
+    // Sets map to center at current location
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+            map.setCenter(pos);
+        });
+    }
+
     // Gets ViewPort lat and long
     google.maps.event.addListener(map, 'bounds_changed', function () {
         var upper_left_lat = map.getBounds().getNorthEast().lat();
@@ -60,27 +73,30 @@
                 'lower_left_lng': lower_left_lng
             },
             success: function (data) {
-                json_data = jQuery.parseJSON(data);
-                address = json_data['places'];
-                for (i = 0; i < address.length; i++) {
-                    console.log(address[i]);
-                    geocodeAddress(address[i]);
+                var list = document.getElementById('place-list');
+
+                // Removes all list items
+                list.innerHTML = "";
+
+                obj = JSON.parse(data);
+                for (var key in obj.d) {
+                    console.log("Key: " + key);
+                    console.log("Value: " + obj.d[key]);
                 }
+//                for (i = 0; i < address.length; i++) {
+//                    geocodeAddress(address[i]);
+//
+//                    // Creates all list items for what is shown in map
+//                    var entry = document.createElement('li');
+//                    entry.appendChild(document.createTextNode(address[i]));
+//                    list.appendChild(entry);
+//                }
             },
             error: function (data) {
-                alert("it didnt work");
+                alert("There was an error. Please, try again later.");
             }
         });
     });
-
-    // Sets map to center at current location
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function (position) {
-            var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-            map.setCenter(pos);
-        });
-    }
-
 
     function geocodeAddress(address) {
         geocoder.geocode({'address': address}, function (results, status) {
