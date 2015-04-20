@@ -50,16 +50,15 @@ def map_view(request):
 
         places = Place.objects.all().filter(latitude__gte=lower_left_lat, longitude__gte=lower_left_lng, latitude__lte=upper_left_lat, longitude__lte=upper_left_lng)
 
-        spots = {}
+        spots = []
         for place in places:
             temp = {}
+            temp['id'] = place.id
             temp['address'] = place.address
             temp['name'] = place.name
-            spots[place.name] = temp
+            spots.append(temp)
 
-        json_data = json.dumps(spots)
-
-        return HttpResponse(json_data)
+        return HttpResponse(json.dumps(spots))
 
     # Render the template depending on the context.
     return render(request, 'points/map_view.html')

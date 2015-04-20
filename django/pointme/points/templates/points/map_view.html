@@ -78,19 +78,18 @@
                 // Removes all list items
                 list.innerHTML = "";
 
-                obj = JSON.parse(data);
-                for (var key in obj.d) {
-                    console.log("Key: " + key);
-                    console.log("Value: " + obj.d[key]);
-                }
-//                for (i = 0; i < address.length; i++) {
-//                    geocodeAddress(address[i]);
-//
-//                    // Creates all list items for what is shown in map
-//                    var entry = document.createElement('li');
-//                    entry.appendChild(document.createTextNode(address[i]));
-//                    list.appendChild(entry);
-//                }
+                // Parse through response
+                var json = $.parseJSON(data);
+                $(json).each(function (i, val) {
+                    console.log(val);
+                    geocodeAddress(val.address);
+
+                    //Creates all list items for what is shown in map
+                    var entry = document.createElement('li');
+                    entry.appendChild(document.createTextNode(val.address + " - " + val.name));
+                    list.appendChild(entry);
+                });
+
             },
             error: function (data) {
                 alert("There was an error. Please, try again later.");
