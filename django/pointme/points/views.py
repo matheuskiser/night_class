@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, render_to_response
 from django.template import RequestContext
 from django.http import HttpResponse
+from django.db.models import Q
 import json
 
 from points.models import Place
@@ -9,6 +10,7 @@ from pygeocoder import Geocoder
 
 
 def show_places(request):
+
     places = Place.objects.all()
 
     # Render the template depending on the context.
@@ -22,6 +24,14 @@ def my_places(request):
 
     # Render the template depending on the context.
     return render(request, 'points/my_places.html', {'places': places})
+
+
+def search_results(request):
+    query = request.GET['search-query']
+
+    places = Place.objects.filter(Q(name__icontains=query) | Q(address__icontains=query))
+
+    return render(request, 'points/search_results.html', {'places': places, 'query': query})
 
 
 def add_place(request):
@@ -56,9 +66,32 @@ def map_view(request):
             temp['id'] = place.id
             temp['address'] = place.address
             temp['name'] = place.name
+            temp['rating'] = place.rating
+            temp['user_name'] = place.author.username
             spots.append(temp)
 
         return HttpResponse(json.dumps(spots))
 
     # Render the template depending on the context.
     return render(request, 'points/map_view.html')
+
+
+def get_places(request):
+    if request.is_ajax():
+        places = Place.objects.all()
+
+        spots = []
+        for place in places:
+            temp = {}
+            temp['id'] = place.id
+            temp['address'] = place.address
+            temp['name'] = place.name
+            temp['rating'] = place.rating
+            temp['user_name'] = place.author.username
+            spots.append(temp)
+
+            print spots
+
+        return HttpResponse(json.dumps(spots))
+
+    return HttpResponse("0")

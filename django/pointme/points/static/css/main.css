@@ -1,0 +1,133 @@
+/*
+ * GLOBAL
+ */
+
+html, body {
+    width: 100%;
+    background-color: #333333;
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    color: #f2f7f3;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #ffffff;
+    border-bottom: solid 1px #8AC007;
+}
+
+h1 {
+    color: #f2f7f3;
+}
+
+/*
+ * Site Wrapper
+ */
+
+#site-wrapper {
+    overflow: hidden;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+/*
+ * Top Navigation
+ */
+
+#top-navigation {
+    overflow: hidden;
+    width: calc(100% - 200px);
+    padding-left: 100px;
+    padding-right: 100px;
+}
+
+#top-navigation-logo {
+    float: left;
+}
+
+#top-navigation-links {
+    float: right;
+}
+
+#top-navigation-links li {
+    list-style: none;
+    display: inline;
+    font-weight: bold;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+/*
+ * Main Content
+ */
+
+#header-content {
+    text-align: center;
+}
+
+#places-content {
+    text-align: center;
+}
+
+/*
+ * Index View (Items)
+ */
+
+.item {
+    width: 250px;
+    height: 250px;
+    background-color: #f2f7f3;
+    display: inline-block;
+    position: relative;
+    text-align: center;
+    margin: 5px;
+    border-radius: 15px;
+    border: 2px solid #8AC007;
+    padding: 10px;
+}
+
+.item-user-name {
+    position: absolute;
+    width: 100%;
+    bottom: 2%;
+    left: 0;
+    border-top: solid 1px #8AC007;
+}
+
+.item-name {
+    position: absolute;
+    width: 100%;
+    top: 2%;
+    left: 0;
+}
+
+.item-rating {
+    position: absolute;
+    top: 45%;
+    width: 100%;
+    left: 0;
+    white-space: nowrap;
+}
+
+.item-address {
+    position: absolute;
+    bottom: 10%;
+    left: 0;
+    width: 100%;
+}
+
+/*
+ * Map View
+ */
+
+#map-canvas {
+    width: calc(100% - 200px);
+    margin-left: 100px;
+    margin-right: 100px;
+    height: 300px;
+    border-radius: 15px;
+    border: 2px solid #8AC007;
+}
