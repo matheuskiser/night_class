@@ -90,14 +90,9 @@ function addDiv(name, address, rating, user_name) {
     newName.innerHTML = name;
     newDiv.appendChild(newName);
 
-    var newAddress = document.createElement("span");
-    newAddress.className = "item-address";
-    newAddress.innerHTML = address;
-    newDiv.appendChild(newAddress);
-
     var newRating = document.createElement("span");
     newRating.className = "item-rating";
-    newRating.innerHTML = rating;
+    newRating.innerHTML = rating + " stars";
     newDiv.appendChild(newRating);
 
     parentDiv.appendChild(newDiv);

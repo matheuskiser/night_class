@@ -90,8 +90,6 @@ def get_places(request):
             temp['user_name'] = place.author.username
             spots.append(temp)
 
-            print spots
-
         return HttpResponse(json.dumps(spots))
 
     return HttpResponse("0")
