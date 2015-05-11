@@ -1,14 +1,157 @@
-{% extends "base.html" %}
+<!DOCTYPE HTML>
 
-{% block body_block %}
-<h1>Login</h1>
+{% load staticfiles %}
+
+<html>
+<head>
+    <title>Point Me!</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+
+    <!--[if lte IE 8]>
+    <script src="{% static 'css/ie/html5shiv.js' %}"></script><![endif]-->
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/jquery.dropotron.min.js' %}"></script>
+    <script src="{% static 'js/skel.min.js' %}"></script>
+    <script src="{% static 'js/skel-layers.min.js' %}"></script>
+    <script src="{% static 'js/init.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/skel.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/style-desktop.css' %}"/>
+    <!--[if lte IE 8]>
+    <link rel="stylesheet" href="{% static 'css/ie/v8.css' %}"/><![endif]-->
+</head>
+<body class="homepage">
+
+<!-- Header -->
+<div id="header-wrapper">
+    <header id="header" class="container">
+
+        <!-- Logo -->
+        <div id="logo">
+            <h1><a href="/points/">Point Me!</a></h1>
+        </div>
+
+        <!-- Nav -->
+        <nav id="nav">
+            <ul>
+                {% if user.is_authenticated %}
+                <li><a href="/points/">Home</a></li>
+                <li><a href="/points/map_view/">Map</a></li>
+                <li class="current"><a href="/points/add_place/">Add Place</a></li>
+                <li><a href="/points/my_places/">View My Places</a></li>
+                <li><a href="{% url 'auth_logout' %}?next=/points/">Logout</a></li>
+                {% else %}
+                <li class="active"><a href="/points/">Home</a></li>
+                <li><a href="/points/map_view/">Map</a></li>
+                <li><a href="{% url 'auth_login' %}">Login</a></li>
+                <li><a href="{% url 'registration_register' %}">Register</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+
+    </header>
+</div>
+
+<!-- Banner -->
+<div id="banner-wrapper">
+    <div id="banner" class="box container">
+        <h2>Login</h2>
         <form method="post" action=".">
                 {% csrf_token %}
-                {{ form.as_p }}
+                {{ form.as_ul }}
 
+            <br>
                 <input type="submit" value="Log in" />
                 <input type="hidden" name="next" value="{{ next }}" />
                 </form>
 
+        <br>
         <p>Not  a member? <a href="{% url 'registration_register' %}">Register</a>!</p>
-{% endblock %}
+    </div>
+
+    <!-- Footer -->
+    <div id="footer-wrapper">
+        <footer id="footer" class="container">
+            <div class="row">
+                <div class="3u">
+
+                    <!-- Links -->
+                    <section class="widget links">
+                        <h3>Random Stuff</h3>
+                        <ul class="style2">
+                            <li><a href="#">Etiam feugiat condimentum</a></li>
+                            <li><a href="#">Aliquam imperdiet suscipit odio</a></li>
+                            <li><a href="#">Sed porttitor cras in erat nec</a></li>
+                            <li><a href="#">Felis varius pellentesque potenti</a></li>
+                            <li><a href="#">Nullam scelerisque blandit leo</a></li>
+                        </ul>
+                    </section>
+
+                </div>
+                <div class="3u">
+
+                    <!-- Links -->
+                    <section class="widget links">
+                        <h3>Random Stuff</h3>
+                        <ul class="style2">
+                            <li><a href="#">Etiam feugiat condimentum</a></li>
+                            <li><a href="#">Aliquam imperdiet suscipit odio</a></li>
+                            <li><a href="#">Sed porttitor cras in erat nec</a></li>
+                            <li><a href="#">Felis varius pellentesque potenti</a></li>
+                            <li><a href="#">Nullam scelerisque blandit leo</a></li>
+                        </ul>
+                    </section>
+
+                </div>
+                <div class="3u">
+
+                    <!-- Links -->
+                    <section class="widget links">
+                        <h3>Random Stuff</h3>
+                        <ul class="style2">
+                            <li><a href="#">Etiam feugiat condimentum</a></li>
+                            <li><a href="#">Aliquam imperdiet suscipit odio</a></li>
+                            <li><a href="#">Sed porttitor cras in erat nec</a></li>
+                            <li><a href="#">Felis varius pellentesque potenti</a></li>
+                            <li><a href="#">Nullam scelerisque blandit leo</a></li>
+                        </ul>
+                    </section>
+
+                </div>
+                <div class="3u">
+
+                    <!-- Contact -->
+                    <section class="widget contact last">
+                        <h3>Contact Us</h3>
+                        <ul>
+                            <li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+                            <li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+                            <li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
+                            <li><a href="#" class="icon fa-dribbble"><span class="label">Dribbble</span></a></li>
+                            <li><a href="#" class="icon fa-pinterest"><span class="label">Pinterest</span></a></li>
+                        </ul>
+                        <p>1234 Fictional Road<br/>
+                            Nashville, TN 00000<br/>
+                            (800) 555-0000</p>
+                    </section>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="12u">
+                    <div id="copyright">
+                        <ul class="menu">
+                            <li>&copy; Point Me. All rights reserved</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>
+
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script type="text/javascript" src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

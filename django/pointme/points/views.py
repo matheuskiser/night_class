@@ -18,12 +18,39 @@ def show_places(request):
 
 
 def my_places(request):
-    # Entry.objects.all().filter(pub_date__year=2006)
-    user = request.user
-    places = Place.objects.all().filter(author=user)
+    # # Entry.objects.all().filter(pub_date__year=2006)
+    # user = request.user
+    # places = Place.objects.all().filter(author=user)
+    #
+    # # Render the template depending on the context.
+    # return render(request, 'points/my_places.html', {'places': places})
+    if request.is_ajax():
+        upper_left_lat = request.GET['upper_left_lat']
+        upper_left_lng = request.GET['upper_left_lng']
+        lower_left_lat = request.GET['lower_left_lat']
+        lower_left_lng = request.GET['lower_left_lng']
+
+        user = request.user
+
+        places = Place.objects.all().filter(latitude__gte=lower_left_lat, longitude__gte=lower_left_lng,
+                                            latitude__lte=upper_left_lat, longitude__lte=upper_left_lng,
+                                            author=user)
+
+        spots = []
+        for place in places:
+            temp = {}
+            temp['id'] = place.id
+            temp['address'] = place.address
+            temp['name'] = place.name
+            temp['rating'] = place.rating
+            temp['user_name'] = place.author.username
+            spots.append(temp)
+
+        return HttpResponse(json.dumps(spots))
 
     # Render the template depending on the context.
-    return render(request, 'points/my_places.html', {'places': places})
+    return render(request, 'points/my_places.html')
+
 
 
 def search_results(request):
