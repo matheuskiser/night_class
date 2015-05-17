@@ -1,153 +1,153 @@
-<!DOCTYPE HTML>
-
+<!DOCTYPE html>
 {% load staticfiles %}
-
-<html>
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js"> <!--<![endif]-->
 <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
     <title>Point Me!</title>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 
-    <!--[if lte IE 8]>
-    <script src="{% static 'css/ie/html5shiv.js' %}"></script><![endif]-->
-    <script src="{% static 'js/jquery.min.js' %}"></script>
-    <script src="{% static 'js/jquery.dropotron.min.js' %}"></script>
-    <script src="{% static 'js/skel.min.js' %}"></script>
-    <script src="{% static 'js/skel-layers.min.js' %}"></script>
-    <script src="{% static 'js/init.js' %}"></script>
-    <link rel="stylesheet" href="{% static 'css/skel.css' %}"/>
+    <meta name="description" content="Point Me! - A simple way to find out what to do around you">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+
+    <link rel="stylesheet" href="{% static 'css/normalize-and-boilerplate.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/font-awesome.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/flexslider.css' %}"/>
     <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
-    <link rel="stylesheet" href="{% static 'css/style-desktop.css' %}"/>
-    <!--[if lte IE 8]>
-    <link rel="stylesheet" href="{% static 'css/ie/v8.css' %}"/><![endif]-->
+
+    <link href='http://fonts.googleapis.com/css?family=Bree+Serif|Pacifico' rel='stylesheet' type='text/css'/>
+
+    <script src="{% static 'js/vendor/modernizr-2.6.2-respond-1.1.0.min.js' %}"></script>
 </head>
-<body class="homepage">
+<body>
 
-<!-- Header -->
-<div id="header-wrapper">
-    <header id="header" class="container">
-
-        <!-- Logo -->
-        <div id="logo">
-            <h1><a href="/points/">Point Me!</a></h1>
+<!-- start: off canvas area -->
+<aside class="off-canvas">
+    <div class="row">
+        <div class="columns col-17">
+            <nav class="main-nav">
+                <ul>
+                    {% if user.is_authenticated %}
+                    Hello {{ user.username }}!
+                    <li class="current"><a href="/points/">Home</a></li>
+                    <li><a href="/points/map_view/">Map</a></li>
+                    <li><a href="/points/add_place/">Add Place</a></li>
+                    <li><a href="{% url 'auth_logout' %}?next=/points/">Logout</a></li>
+                    {% else %}
+                    <li class="current"><a href="/points/">Home</a></li>
+                    <li><a href="/points/map_view/">Map</a></li>
+                    <li><a href="{% url 'auth_login' %}">Login</a></li>
+                    <li><a href="{% url 'registration_register' %}">Register</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
         </div>
-
-        <!-- Nav -->
-        <nav id="nav">
-            <ul>
-                {% if user.is_authenticated %}
-                <li><a href="/points/">Home</a></li>
-                <li><a href="/points/map_view/">Map</a></li>
-                <li class="current"><a href="/points/add_place/">Add Place</a></li>
-                <li><a href="/points/my_places/">View My Places</a></li>
-                <li><a href="{% url 'auth_logout' %}?next=/points/">Logout</a></li>
-                {% else %}
-                <li class="active"><a href="/points/">Home</a></li>
-                <li><a href="/points/map_view/">Map</a></li>
-                <li><a href="{% url 'auth_login' %}">Login</a></li>
-                <li><a href="{% url 'registration_register' %}">Register</a></li>
-                {% endif %}
-            </ul>
-        </nav>
-
-    </header>
-</div>
-
-<!-- Banner -->
-<div id="banner-wrapper">
-    <div id="banner" class="box container">
-        <h2>Register</h2>
-        <form method="post" action=".">
-                {% csrf_token %}
-                {{ form.as_ul }}
-
-            <br>
-                <input type="submit" value="Submit" />
-        </form>
+        <div class="columns col-12">
+            <div class="social-links">
+                <a href="#" title="Like us on Facebook">
+                    <i class="fa fa-facebook"></i>
+                </a>
+                <a href="#" title="Follow us on Twitter">
+                    <i class="fa fa-twitter"></i>
+                </a>
+            </div>
+        </div>
     </div>
+</aside>
+<!-- end: off canvas area -->
 
-    <!-- Footer -->
-    <div id="footer-wrapper">
-        <footer id="footer" class="container">
-            <div class="row">
-                <div class="3u">
+<!-- start: ON canvas area -->
+<div class="on-canvas">
+    <div class="canvas-overlay"></div>
 
-                    <!-- Links -->
-                    <section class="widget links">
-                        <h3>Random Stuff</h3>
-                        <ul class="style2">
-                            <li><a href="#">Etiam feugiat condimentum</a></li>
-                            <li><a href="#">Aliquam imperdiet suscipit odio</a></li>
-                            <li><a href="#">Sed porttitor cras in erat nec</a></li>
-                            <li><a href="#">Felis varius pellentesque potenti</a></li>
-                            <li><a href="#">Nullam scelerisque blandit leo</a></li>
-                        </ul>
-                    </section>
-
-                </div>
-                <div class="3u">
-
-                    <!-- Links -->
-                    <section class="widget links">
-                        <h3>Random Stuff</h3>
-                        <ul class="style2">
-                            <li><a href="#">Etiam feugiat condimentum</a></li>
-                            <li><a href="#">Aliquam imperdiet suscipit odio</a></li>
-                            <li><a href="#">Sed porttitor cras in erat nec</a></li>
-                            <li><a href="#">Felis varius pellentesque potenti</a></li>
-                            <li><a href="#">Nullam scelerisque blandit leo</a></li>
-                        </ul>
-                    </section>
-
-                </div>
-                <div class="3u">
-
-                    <!-- Links -->
-                    <section class="widget links">
-                        <h3>Random Stuff</h3>
-                        <ul class="style2">
-                            <li><a href="#">Etiam feugiat condimentum</a></li>
-                            <li><a href="#">Aliquam imperdiet suscipit odio</a></li>
-                            <li><a href="#">Sed porttitor cras in erat nec</a></li>
-                            <li><a href="#">Felis varius pellentesque potenti</a></li>
-                            <li><a href="#">Nullam scelerisque blandit leo</a></li>
-                        </ul>
-                    </section>
-
-                </div>
-                <div class="3u">
-
-                    <!-- Contact -->
-                    <section class="widget contact last">
-                        <h3>Contact Us</h3>
-                        <ul>
-                            <li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
-                            <li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
-                            <li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
-                            <li><a href="#" class="icon fa-dribbble"><span class="label">Dribbble</span></a></li>
-                            <li><a href="#" class="icon fa-pinterest"><span class="label">Pinterest</span></a></li>
-                        </ul>
-                        <p>1234 Fictional Road<br/>
-                            Nashville, TN 00000<br/>
-                            (800) 555-0000</p>
-                    </section>
-
+    <header class="header">
+        <div class="row max-inner">
+            <div class="columns col-3">
+                <a href="#" class="toggle-off-canvas"><i class="fa fa-bars"></i></a>
+                <a href="/points/" class="logo">
+                    <span class="highlight-color">Point</span>me
+                </a>
+            </div>
+            <div class="columns col-7">
+                <nav class="main-nav">
+                    <ul>
+                        {% if user.is_authenticated %}
+                        <li class="current"><a href="/points/">Home</a></li>
+                        <li><a href="/points/map_view/">Map</a></li>
+                        <li><a href="/points/add_place/">Add Place</a></li>
+                        <li><a href="{% url 'auth_logout' %}?next=/points/">Logout</a></li>
+                        {% else %}
+                        <li class="current"><a href="/points/">Home</a></li>
+                        <li><a href="/points/map_view/">Map</a></li>
+                        <li><a href="{% url 'auth_login' %}">Login</a></li>
+                        <li><a href="{% url 'registration_register' %}">Register</a></li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+            <div class="columns col-2">
+                <div class="social-links">
+                    <a href="#" title="Like us on Facebook">
+                        <i class="fa fa-facebook"></i>
+                    </a>
+                    <a href="#" title="Follow us on Twitter">
+                        <i class="fa fa-twitter"></i>
+                    </a>
+                    {% if user.is_authenticated %}
+                    <br>
+                    Hello {{ user.username }}!
+                    {% endif %}
                 </div>
             </div>
-            <div class="row">
-                <div class="12u">
-                    <div id="copyright">
-                        <ul class="menu">
-                            <li>&copy; Point Me. All rights reserved</li>
-                        </ul>
+        </div>
+    </header>
+
+    <div class="main">
+        <section class="features-listing">
+
+            <div class="row feature">
+                <div class="max-inner">
+                    <div class="form-inner">
+                        <h2>Register</h2>
+
+                        <form method="post" action=".">
+                            {% csrf_token %}
+                            {{ form.as_ul }}
+
+                            <br>
+                            <input type="submit" value="Submit"/>
+                        </form>
+                    </div>
+                </div>
+                </div>
+        </section>
+    </div>
+
+    <footer class="footer">
+        <div class="row copyright">
+            <div class="max-inner">
+                <div class="row">
+                    <div class="columns col-12">
+                        <p>Copyright &copy; 2014 PulseAdmin. All rights reserved.</p>
                     </div>
                 </div>
             </div>
-        </footer>
-    </div>
+        </div>
+    </footer>
 </div>
 
-<script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<script type="text/javascript" src="{% static 'js/main.js' %}"></script>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.js"></script>
+<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.1.js"><\/script>')</script>
+
+<script src="{% static 'js/plugins.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
 </body>
 </html>

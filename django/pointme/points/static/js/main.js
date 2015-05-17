@@ -1,99 +1,82 @@
-var infowindow = new google.maps.InfoWindow();
-var geocoder = new google.maps.Geocoder();
+$(document).ready(function(){
 
-var map = new google.maps.Map(document.getElementById('map-canvas'), {
-    zoom: 10,
-    mapTypeId: google.maps.MapTypeId.ROADMAP
+  // init FlexSlider
+  // ------------------------------------------------------------------------
+  $('.flexslider').flexslider({
+    slideshow: false,
+    directionNav: false
+  });
+
+  // Fit Footer Headings
+  // ------------------------------------------------------------------------
+  $(".footer h3, .cta.big-cta,h2").fitText(0.8, { maxFontSize: '30px' });
+
+  // toggle FAQs
+  // ------------------------------------------------------------------------
+  $(".faq-q a").on('click', function(e) {
+    $(this).parent().parent().parent().next().stop().stop().slideToggle("slow");
+    $(this).closest(".faq").toggleClass("active-faq");
+    $(this).closest(".faq").siblings().removeClass("active-faq")
+    $(this).closest(".faq").siblings().children(".faq-a").slideUp("slow");
+    e.preventDefault();
+  });  
+
+  // cc field validation
+  // https://github.com/stripe/jquery.payment
+  // ------------------------------------------------------------------------
+  $('[data-numeric]').payment('restrictNumeric');
+  $('.cc-number').payment('formatCardNumber');
+  $('.cc-exp').payment('formatCardExpiry');
+  $('.cc-cvc').payment('formatCardCVC');
+
+  $('form.has-payment').submit(function(e){
+    e.preventDefault();
+    $('input').removeClass('invalid');
+    $('.validation-feedback').removeClass('passed failed');
+
+    var cardType = $.payment.cardType($('.cc-number').val());
+
+    $('.cc-number').toggleClass('invalid', !$.payment.validateCardNumber($('.cc-number').val()));
+    $('.cc-exp').toggleClass('invalid', !$.payment.validateCardExpiry($('.cc-exp').payment('cardExpiryVal')));
+    $('.cc-cvc').toggleClass('invalid', !$.payment.validateCardCVC($('.cc-cvc').val(), cardType));
+
+    if ( $('input.invalid').length ) {
+      $('.validation-feedback').addClass('failed');
+    } else {
+      $('.validation-feedback').addClass('passed');
+    }
+  });
+
+  // toggle payment fields
+  // ------------------------------------------------------------------------
+  $(".toggle-cc-fields").on('click', function(e) {
+    $(this).toggleClass("active-fields");
+    $(".paypal-fields").removeClass("active-fields");
+    $(".cc-fields").stop().stop().slideToggle("slow");
+    e.preventDefault();
+  });  
+
+  // toggle pp fields
+  // ------------------------------------------------------------------------
+  $(".paypal-fields").on('click', function(e) {
+    $(this).toggleClass("active-fields");
+    $(".toggle-cc-fields").removeClass("active-fields");
+    $(".cc-fields").stop().stop().slideUp("slow");
+    e.preventDefault();
+  });  
+
+  // off-canvas nav
+  // ------------------------------------------------------------------------
+  $('.toggle-off-canvas').on('click',function (e) {
+    $( '.on-canvas' ).toggleClass( "push-it" ).toggleClass('push-it-right');
+    $( 'body' ).toggleClass( "freeze" );
+    $('.canvas-overlay').show();
+      e.preventDefault();
+  });  
+  $('.canvas-overlay').on('click',function () {
+    $('.on-canvas' ).removeClass( "push-it" ).removeClass('push-it-right');
+    $( 'body' ).removeClass( "freeze" );
+    $(this).hide();
+  });   
+
 });
-
-// Sets map to center at current location
-if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function (position) {
-        var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-        map.setCenter(pos);
-    });
-}
-
-// Gets ViewPort lat and long once map is loaded
-google.maps.event.addListener(map, 'idle', function () {
-    var upper_left_lat = map.getBounds().getNorthEast().lat();
-    var upper_left_lng = map.getBounds().getNorthEast().lng();
-    var lower_left_lat = map.getBounds().getSouthWest().lat();
-    var lower_left_lng = map.getBounds().getSouthWest().lng();
-
-    $.ajax({
-        method: 'GET',
-        url: '',
-        data: {
-            'upper_left_lat': upper_left_lat,
-            'upper_left_lng': upper_left_lng,
-            'lower_left_lat': lower_left_lat,
-            'lower_left_lng': lower_left_lng
-        },
-        success: function (data) {
-            // Remove all elements from main div
-            var parentDiv = document.getElementById('places-content');
-            parentDiv.innerHTML = "";
-
-            // Parse through response
-            var json = $.parseJSON(data);
-            $(json).each(function (i, val) {
-                geocodeAddress(val.address);
-
-                //Creates all list items for what is shown in map
-                addDiv(val.name, val.address, val.rating, val.user_name);
-            });
-
-        },
-        error: function (data) {
-            alert("There was an error. Please, try again later.");
-        }
-    });
-});
-
-function geocodeAddress(address) {
-    geocoder.geocode({'address': address}, function (results, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-            createMarker(results[0].geometry.location, address);
-        }
-    });
-}
-
-function createMarker(latlng, html) {
-    var marker = new google.maps.Marker({
-        position: latlng,
-        map: map
-    });
-
-    google.maps.event.addListener(marker, 'mouseover', function () {
-        infowindow.setContent(html);
-        infowindow.open(map, marker);
-    });
-
-    google.maps.event.addListener(marker, 'mouseout', function () {
-        infowindow.close();
-    });
-}
-
-function addDiv(name, address, rating, user_name) {
-    var parentDiv = document.getElementById('places-content');
-    var newDiv = document.createElement("div");
-    newDiv.className = "item";
-
-    var newUserName = document.createElement("span");
-    newUserName.className = "item-user-name";
-    newUserName.innerHTML = user_name;
-    newDiv.appendChild(newUserName);
-
-    var newName = document.createElement("span");
-    newName.className = "item-name";
-    newName.innerHTML = name;
-    newDiv.appendChild(newName);
-
-    var newRating = document.createElement("span");
-    newRating.className = "item-rating";
-    newRating.innerHTML = rating + " stars";
-    newDiv.appendChild(newRating);
-
-    parentDiv.appendChild(newDiv);
-}

@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, render_to_response
+from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
 from django.http import HttpResponse
 from django.db.models import Q
@@ -10,7 +11,6 @@ from pygeocoder import Geocoder
 
 
 def show_places(request):
-
     places = Place.objects.all()
 
     # Render the template depending on the context.
@@ -42,7 +42,7 @@ def my_places(request):
             temp['id'] = place.id
             temp['address'] = place.address
             temp['name'] = place.name
-            temp['rating'] = place.rating
+            temp['like'] = place.like
             temp['user_name'] = place.author.username
             spots.append(temp)
 
@@ -50,7 +50,6 @@ def my_places(request):
 
     # Render the template depending on the context.
     return render(request, 'points/my_places.html')
-
 
 
 def search_results(request):
@@ -61,6 +60,7 @@ def search_results(request):
     return render(request, 'points/search_results.html', {'places': places, 'query': query})
 
 
+@login_required()
 def add_place(request):
     form = PlaceForm(request.POST or None)
     if form.is_valid():
@@ -85,7 +85,8 @@ def map_view(request):
         lower_left_lat = request.GET['lower_left_lat']
         lower_left_lng = request.GET['lower_left_lng']
 
-        places = Place.objects.all().filter(latitude__gte=lower_left_lat, longitude__gte=lower_left_lng, latitude__lte=upper_left_lat, longitude__lte=upper_left_lng)
+        places = Place.objects.all().filter(latitude__gte=lower_left_lat, longitude__gte=lower_left_lng,
+                                            latitude__lte=upper_left_lat, longitude__lte=upper_left_lng)
 
         spots = []
         for place in places:
@@ -93,8 +94,9 @@ def map_view(request):
             temp['id'] = place.id
             temp['address'] = place.address
             temp['name'] = place.name
-            temp['rating'] = place.rating
+            temp['like'] = place.like
             temp['user_name'] = place.author.username
+            temp['comment'] = place.comment
             spots.append(temp)
 
         return HttpResponse(json.dumps(spots))
@@ -113,8 +115,9 @@ def get_places(request):
             temp['id'] = place.id
             temp['address'] = place.address
             temp['name'] = place.name
-            temp['rating'] = place.rating
+            temp['like'] = place.like
             temp['user_name'] = place.author.username
+            temp['comment'] = place.comment
             spots.append(temp)
 
         return HttpResponse(json.dumps(spots))

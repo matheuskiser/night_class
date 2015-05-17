@@ -1,7 +1,146 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+{% load staticfiles %}
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>Point Me!</title>
+
+    <meta name="description" content="Point Me! - A simple way to find out what to do around you">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+
+    <link rel="stylesheet" href="{% static 'css/normalize-and-boilerplate.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/font-awesome.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/flexslider.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+
+    <link href='http://fonts.googleapis.com/css?family=Bree+Serif|Pacifico' rel='stylesheet' type='text/css'/>
+
+    <script src="{% static 'js/vendor/modernizr-2.6.2-respond-1.1.0.min.js' %}"></script>
+</head>
+<body>
+
+<!-- start: off canvas area -->
+<aside class="off-canvas">
+    <div class="row">
+        <div class="columns col-17">
+            <nav class="main-nav">
+                <ul>
+                    {% if user.is_authenticated %}
+                    Hello {{ user.username }}!
+                    <li class="current"><a href="/points/">Home</a></li>
+                    <li><a href="/points/map_view/">Map</a></li>
+                    <li><a href="/points/add_place/">Add Place</a></li>
+                    <li><a href="{% url 'auth_logout' %}?next=/points/">Logout</a></li>
+                    {% else %}
+                    <li class="current"><a href="/points/">Home</a></li>
+                    <li><a href="/points/map_view/">Map</a></li>
+                    <li><a href="{% url 'auth_login' %}">Login</a></li>
+                    <li><a href="{% url 'registration_register' %}">Register</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+        <div class="columns col-12">
+            <div class="social-links">
+                <a href="#" title="Like us on Facebook">
+                    <i class="fa fa-facebook"></i>
+                </a>
+                <a href="#" title="Follow us on Twitter">
+                    <i class="fa fa-twitter"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</aside>
+<!-- end: off canvas area -->
+
+<!-- start: ON canvas area -->
+<div class="on-canvas">
+    <div class="canvas-overlay"></div>
+
+    <header class="header">
+        <div class="row max-inner">
+            <div class="columns col-3">
+                <a href="#" class="toggle-off-canvas"><i class="fa fa-bars"></i></a>
+                <a href="/points/" class="logo">
+                    <span class="highlight-color">Point</span>me
+                </a>
+            </div>
+            <div class="columns col-7">
+                <nav class="main-nav">
+                    <ul>
+                        {% if user.is_authenticated %}
+                        <li class="current"><a href="/points/">Home</a></li>
+                        <li><a href="/points/map_view/">Map</a></li>
+                        <li><a href="/points/add_place/">Add Place</a></li>
+                        <li><a href="{% url 'auth_logout' %}?next=/points/">Logout</a></li>
+                        {% else %}
+                        <li class="current"><a href="/points/">Home</a></li>
+                        <li><a href="/points/map_view/">Map</a></li>
+                        <li><a href="{% url 'auth_login' %}">Login</a></li>
+                        <li><a href="{% url 'registration_register' %}">Register</a></li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+            <div class="columns col-2">
+                <div class="social-links">
+                    <a href="#" title="Like us on Facebook">
+                        <i class="fa fa-facebook"></i>
+                    </a>
+                    <a href="#" title="Follow us on Twitter">
+                        <i class="fa fa-twitter"></i>
+                    </a>
+                    {% if user.is_authenticated %}
+                    <br>
+                    Hello {{ user.username }}!
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main">
+        <section class="features-listing">
+
+            <div class="row feature">
+                <div class="max-inner">
+                    <div class="form-inner">
+                        <h2>Registration Complete</h2>
+                        <p>You are now registered.</p>
+                    </div>
+                </div>
+                </div>
+        </section>
+    </div>
+
+    <footer class="footer">
+        <div class="row copyright">
+            <div class="max-inner">
+                <div class="row">
+                    <div class="columns col-12">
+                        <p>Copyright &copy; 2014 PulseAdmin. All rights reserved.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
 
 
-{% block body_block %}
-<h1>Registration Complete</h1>
-        <p>You are now registered</p>
-{% endblock %}
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.js"></script>
+<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.1.js"><\/script>')</script>
+
+<script src="{% static 'js/plugins.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

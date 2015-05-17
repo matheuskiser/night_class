@@ -1,212 +1,243 @@
-<!DOCTYPE HTML>
-
+<!DOCTYPE html>
 {% load staticfiles %}
-
-<html>
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js"> <!--<![endif]-->
 <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
     <title>Point Me!</title>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 
-    <!--[if lte IE 8]>
-    <script src="{% static 'css/ie/html5shiv.js' %}"></script><![endif]-->
-    <script src="{% static 'js/jquery.min.js' %}"></script>
-    <script src="{% static 'js/jquery.dropotron.min.js' %}"></script>
-    <script src="{% static 'js/skel.min.js' %}"></script>
-    <script src="{% static 'js/skel-layers.min.js' %}"></script>
-    <script src="{% static 'js/init.js' %}"></script>
-    <link rel="stylesheet" href="{% static 'css/skel.css' %}"/>
+    <meta name="description" content="Point Me! - A simple way to find out what to do around you">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+
+    <link rel="stylesheet" href="{% static 'css/normalize-and-boilerplate.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/font-awesome.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/flexslider.css' %}"/>
     <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
-    <link rel="stylesheet" href="{% static 'css/style-desktop.css' %}"/>
-    <!--[if lte IE 8]>
-    <link rel="stylesheet" href="{% static 'css/ie/v8.css' %}"/><![endif]-->
+
+    <link href='http://fonts.googleapis.com/css?family=Bree+Serif|Pacifico' rel='stylesheet' type='text/css'/>
+
+    <script src="{% static 'js/vendor/modernizr-2.6.2-respond-1.1.0.min.js' %}"></script>
 </head>
-<body class="homepage">
+<body>
 
-<!-- Header -->
-<div id="header-wrapper">
-    <header id="header" class="container">
-
-        <!-- Logo -->
-        <div id="logo">
-            <h1><a href="/points/">Point Me!</a></h1>
-        </div>
-
-        <!-- Nav -->
-        <nav id="nav">
-            <ul>
-                {% if user.is_authenticated %}
-                <li class="current"><a href="/points/">Home</a></li>
-                <li><a href="/points/map_view/">Map</a></li>
-                <li><a href="/points/add_place/">Add Place</a></li>
-                <li><a href="/points/my_places/">View My Places</a></li>
-                <li><a href="{% url 'auth_logout' %}?next=/points/">Logout</a></li>
-                {% else %}
-                <li class="active"><a href="/points/">Home</a></li>
-                <li><a href="/points/map_view/">Map</a></li>
-                <li><a href="{% url 'auth_login' %}">Login</a></li>
-                <li><a href="{% url 'registration_register' %}">Register</a></li>
-                {% endif %}
-            </ul>
-        </nav>
-
-    </header>
-</div>
-
-<!-- Banner -->
-<div id="banner-wrapper">
-    <div id="banner" class="box container">
-        <div class="row">
-            <div class="7u">
-                <h2>Point It!</h2>
-
-                <p>Rate and share any places around you!</p>
-            </div>
-            <div class="5u">
+<!-- start: off canvas area -->
+<aside class="off-canvas">
+    <div class="row">
+        <div class="columns col-17">
+            <nav class="main-nav">
                 <ul>
                     {% if user.is_authenticated %}
-                    <li><a href="/points/map_view/" class="button big icon fa-arrow-circle-right">Places Nearby</a></li>
-                    <li><a href="/points/add_place/" class="button alt big icon fa-question-circle">Add a Place</a></li>
+                    Hello {{ user.username }}!
+                    <li class="current"><a href="/points/">Home</a></li>
+                    <li><a href="/points/map_view/">Map</a></li>
+                    <li><a href="/points/add_place/">Add Place</a></li>
+                    <li><a href="{% url 'auth_logout' %}?next=/points/">Logout</a></li>
                     {% else %}
-                    <li><a href="{% url 'auth_login' %}" class="button big icon fa-arrow-circle-right">Login</a></li>
-                    <li><a href="{% url 'registration_register' %}" class="button alt big icon fa-question-circle">Register</a></li>
+                    <li class="current"><a href="/points/">Home</a></li>
+                    <li><a href="/points/map_view/">Map</a></li>
+                    <li><a href="{% url 'auth_login' %}">Login</a></li>
+                    <li><a href="{% url 'registration_register' %}">Register</a></li>
                     {% endif %}
                 </ul>
+            </nav>
+        </div>
+        <div class="columns col-12">
+            <div class="social-links">
+                <a href="#" title="Like us on Facebook">
+                    <i class="fa fa-facebook"></i>
+                </a>
+                <a href="#" title="Follow us on Twitter">
+                    <i class="fa fa-twitter"></i>
+                </a>
             </div>
         </div>
     </div>
-</div>
+</aside>
+<!-- end: off canvas area -->
 
-<!-- Main -->
-<div id="main-wrapper">
-    <div class="container">
-        <div class="row">
-            <div class="4u">
+<!-- start: ON canvas area -->
+<div class="on-canvas">
+    <div class="canvas-overlay"></div>
 
-                <!-- Sidebar -->
-                <div id="sidebar">
-                    <section class="widget thumbnails">
-                        <h3>Interesting stuff</h3>
-
-                        <div class="grid">
-                            <div class="row no-collapse 50%">
-                                <div class="6u"><a href="#" class="image fit"><img src="{% static 'images/pic04.jpg' %}"
-                                                                                   alt=""/></a></div>
-                                <div class="6u"><a href="#" class="image fit"><img src="{% static 'images/pic05.jpg' %}"
-                                                                                   alt=""/></a></div>
-                            </div>
-                            <div class="row no-collapse 50%">
-                                <div class="6u"><a href="#" class="image fit"><img src="{% static 'images/pic06.jpg' %}"
-                                                                                   alt=""/></a></div>
-                                <div class="6u"><a href="#" class="image fit"><img src="{% static 'images/pic07.jpg' %}"
-                                                                                   alt=""/></a></div>
-                            </div>
-                        </div>
-                        <a href="#" class="button icon fa-file-text-o">More</a>
-                    </section>
-                </div>
-
+    <header class="header">
+        <div class="row max-inner">
+            <div class="columns col-3">
+                <a href="#" class="toggle-off-canvas"><i class="fa fa-bars"></i></a>
+                <a href="/points/" class="logo">
+                    <span class="highlight-color">Point</span>me
+                </a>
             </div>
-            <div class="8u important(collapse)">
-
-                <!-- Content -->
-                <div id="content">
-                    <section class="last">
-                        <h2>So what's this all about?</h2>
-
-                        <p><strong>Point Me</strong>, a free platform where users can see rated places around them.
-                            From restaurants and clubs to schools and stores. Click the map to see what is nearby or
-                            feel free to leave a rating for a place.</p>
-
-                        <p>The more you rate places, the better our lists will get. Be as honest as possible so other
-                        will know about that place.</p>
-                        <a href="/points/add_place/" class="button icon fa-arrow-circle-right">Add a Place</a>
-                    </section>
-                </div>
-
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Footer -->
-<div id="footer-wrapper">
-    <footer id="footer" class="container">
-        <div class="row">
-            <div class="3u">
-
-                <!-- Links -->
-                <section class="widget links">
-                    <h3>Random Stuff</h3>
-                    <ul class="style2">
-                        <li><a href="#">Etiam feugiat condimentum</a></li>
-                        <li><a href="#">Aliquam imperdiet suscipit odio</a></li>
-                        <li><a href="#">Sed porttitor cras in erat nec</a></li>
-                        <li><a href="#">Felis varius pellentesque potenti</a></li>
-                        <li><a href="#">Nullam scelerisque blandit leo</a></li>
-                    </ul>
-                </section>
-
-            </div>
-            <div class="3u">
-
-                <!-- Links -->
-                <section class="widget links">
-                    <h3>Random Stuff</h3>
-                    <ul class="style2">
-                        <li><a href="#">Etiam feugiat condimentum</a></li>
-                        <li><a href="#">Aliquam imperdiet suscipit odio</a></li>
-                        <li><a href="#">Sed porttitor cras in erat nec</a></li>
-                        <li><a href="#">Felis varius pellentesque potenti</a></li>
-                        <li><a href="#">Nullam scelerisque blandit leo</a></li>
-                    </ul>
-                </section>
-
-            </div>
-            <div class="3u">
-
-                <!-- Links -->
-                <section class="widget links">
-                    <h3>Random Stuff</h3>
-                    <ul class="style2">
-                        <li><a href="#">Etiam feugiat condimentum</a></li>
-                        <li><a href="#">Aliquam imperdiet suscipit odio</a></li>
-                        <li><a href="#">Sed porttitor cras in erat nec</a></li>
-                        <li><a href="#">Felis varius pellentesque potenti</a></li>
-                        <li><a href="#">Nullam scelerisque blandit leo</a></li>
-                    </ul>
-                </section>
-
-            </div>
-            <div class="3u">
-
-                <!-- Contact -->
-                <section class="widget contact last">
-                    <h3>Contact Us</h3>
+            <div class="columns col-7">
+                <nav class="main-nav">
                     <ul>
-                        <li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
-                        <li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
-                        <li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
-                        <li><a href="#" class="icon fa-dribbble"><span class="label">Dribbble</span></a></li>
-                        <li><a href="#" class="icon fa-pinterest"><span class="label">Pinterest</span></a></li>
+                        {% if user.is_authenticated %}
+                        <li class="current"><a href="/points/">Home</a></li>
+                        <li><a href="/points/map_view/">Map</a></li>
+                        <li><a href="/points/add_place/">Add Place</a></li>
+                        <li><a href="{% url 'auth_logout' %}?next=/points/">Logout</a></li>
+                        {% else %}
+                        <li class="current"><a href="/points/">Home</a></li>
+                        <li><a href="/points/map_view/">Map</a></li>
+                        <li><a href="{% url 'auth_login' %}">Login</a></li>
+                        <li><a href="{% url 'registration_register' %}">Register</a></li>
+                        {% endif %}
                     </ul>
-                    <p>1234 Fictional Road<br/>
-                        Nashville, TN 00000<br/>
-                        (800) 555-0000</p>
-                </section>
-
+                </nav>
+            </div>
+            <div class="columns col-2">
+                <div class="social-links">
+                    <a href="#" title="Like us on Facebook">
+                        <i class="fa fa-facebook"></i>
+                    </a>
+                    <a href="#" title="Follow us on Twitter">
+                        <i class="fa fa-twitter"></i>
+                    </a>
+                    {% if user.is_authenticated %}
+                    <br>
+                    Hello {{ user.username }}!
+                    {% endif %}
+                </div>
             </div>
         </div>
-        <div class="row">
-            <div class="12u">
-                <div id="copyright">
-                    <ul class="menu">
-                        <li>&copy; Point Me. All rights reserved</li>
-                    </ul>
+    </header>
+
+    <div class="main">
+        <section class="features-listing">
+
+            <div class="row feature">
+                <div class="max-inner">
+
+                    <div class="flexslider">
+                        <ul class="slides">
+                            <!-- start: slide -->
+                            <li>
+                                <div class="columns col-7 feature-image">
+                                    <img src="{% static 'images/map-marker.png' %}" alt="Professional interface"/>
+                                </div>
+                                <div class="columns col-5 feature-desc">
+                                    <h2>What is it?</h2>
+
+                                    <p><strong>Point Me</strong>, a free platform where users can see rated places around them.
+                                    From restaurants and clubs to schools and stores. Click the map to see what is nearby or
+                                    feel free to leave a rating for a place.</p>
+
+                                </div>
+                            </li>
+                            <!-- end: slide -->
+                            <!-- start: slide -->
+                            <li>
+                                <div class="columns col-7 feature-image">
+                                    <img src="{% static 'images/rating_building.png' %}" alt="Professional interface"/>
+                                </div>
+                                <div class="columns col-5 feature-desc">
+                                    <h2>Add a Place</h2>
+
+                                    <p>Click the button below to add a place you have visited. When you rate
+                                    places, other users will be able to check your review and decide to go.</p>
+
+                                    <p><a href="/points/add_place/" title="Add Place" class="btn">Add Place</a></p>
+                                </div>
+                            </li>
+                            <!-- end: slide -->
+                        </ul>
+                    </div>
+
+
+                </div>
+            </div>
+
+
+            <div class="row feature">
+                <div class="max-inner">
+                    <div class="columns col-7 feature-image">
+                        <img src="{% static 'images/ipad.png' %}" alt="A lot of options"/>
+                    </div>
+                    <div class="columns col-5 feature-desc">
+                        <h2>A lot of options</h2>
+
+                        <p>
+                            At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis molestias <a
+                                href="#">excepturi sint occaecati cupiditate non provident</a>, similique sunt in culpa
+                            qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum
+                            facilis
+                        </p>
+
+                        <p>
+                            Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id
+                            quod maxime placeat facere.
+                        </p>
+
+                        <p><a href="#" title="Learn more" class="btn">Learn more</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="row feature alt-style">
+                <div class="max-inner">
+
+                    <div class="columns col-4">
+                        <div class="feature-desc">
+                            <h2>Easy navigation</h2>
+
+                            <p>
+                                Perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
+                                laudantium, totam rem aperiam, eaque ipsa quae.
+                            </p>
+                        </div>
+                        <figure class="rounded easy-nav">
+                            <img src="{% static 'images/easy-nav.png' %}" alt="Easy Navigation"/>
+                            <span class="indicator-line"></span>
+                        </figure>
+                    </div>
+
+                    <div class="columns col-4">
+                        <figure class="iphone-wrapper"><img src="{% static 'images/iphone.png' %}"
+                                                            alt="Easy Navigation"/></figure>
+                    </div>
+
+                    <div class="columns col-4">
+                        <figure class="rounded smart-charts">
+                            <img src="{% static 'images/smart-charts.png' %}" alt="Smart charts"/>
+                            <span class="indicator-line"></span>
+                        </figure>
+                        <div class="feature-desc">
+                            <h2>Smart charts</h2>
+
+                            <p>Doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore
+                                veritatis.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer class="footer">
+        <div class="row copyright">
+            <div class="max-inner">
+                <div class="row">
+                    <div class="columns col-12">
+                        <p>Copyright &copy; 2015 PointMe. All rights reserved.</p>
+                    </div>
                 </div>
             </div>
         </div>
     </footer>
 </div>
 
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.js"></script>
+<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.1.js"><\/script>')</script>
+
+<script src="{% static 'js/plugins.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
 </body>
 </html>
